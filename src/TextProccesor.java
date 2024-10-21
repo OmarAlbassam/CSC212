@@ -1,4 +1,9 @@
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 
 public class TextProccesor {
     
@@ -35,13 +40,12 @@ public class TextProccesor {
                 // This try-catch block considers end of document entries. If it reaches the row
                 // after the last document, a NumberFormatException will be thrown. (breaks loop)
                 try {
-                    Double.parseDouble(lineValues[0]);
+                    Integer.parseInt(lineValues[0]);
                 } catch (NumberFormatException e) {
                     break;
                 }
-                
-
             }
+            input.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
