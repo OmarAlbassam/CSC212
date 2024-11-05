@@ -1,8 +1,8 @@
-public class Index<T> {
+public class IndexLinkedList<T>  {
     
     private IndexNode<T> head, current;
 
-    Index() {
+    IndexLinkedList() {
         head = current = null;
     }
 
@@ -64,6 +64,7 @@ public class Index<T> {
     
     }
 
+    // Method to print the key alongside the list
     public void print() {
         IndexNode<T> tmp = head;
         while (tmp != null) {
