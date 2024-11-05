@@ -31,7 +31,7 @@ public class TextProccesor {
             while ((line = input.readLine()) != null) {
                 // Split the entries by comma so that lineValues[0] = {Document ID},
                 // lineValues[1+] = {Content}
-                String[] lineValues = line.split(",");
+                String[] lineValues = line.split(","); // 0: 0, 1: Markerufece, 2: mdijdisj, 3: ....
 
                 // This try-catch block considers end of document entries. If it reaches the row
                 // after the last document, a NumberFormatException will be thrown. (breaks
@@ -41,15 +41,20 @@ public class TextProccesor {
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                     break;
                 }
+
+                String lineContent = "";
+                for (int i = 1; i < lineValues.length; i++) {
+                    lineContent += lineValues[i];
+                }
                 // If document, then continue processing
-                lineValues[1] = lineValues[1].toLowerCase();
-                lineValues[1] = lineValues[1].replaceAll(ALPHANUMERIC_REGEX, ""); // Replace all non-alphanumeric values to blanks
+                lineContent = lineContent.toLowerCase();
+                lineContent = lineContent.replaceAll(ALPHANUMERIC_REGEX, ""); // Replace all non-alphanumeric values to blanks
 
                 // Split individual words from the doc's content into an array
-                lineWords = lineValues[1].split(" ");
+                lineWords = lineContent.split(" ");
                 LinkedList<String> ls = new LinkedList<>();
                 for (int i = 0; i < lineWords.length; i++) {
-                    if (!ls.contains(lineWords[i]) && !stopWords.contains(lineWords[i]))
+                    if (!stopWords.contains(lineWords[i]))
                         ls.insert(lineWords[i]);
                 }
 
