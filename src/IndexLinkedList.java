@@ -47,6 +47,10 @@ public class IndexLinkedList<T>  {
         return current.data;
     }
 
+    public boolean last() {
+        return current.next == null;
+    }
+
     public boolean empty() {
         return head == null;
     }
@@ -67,10 +71,12 @@ public class IndexLinkedList<T>  {
     // Method to print the key alongside the list
     public void print() {
         IndexNode<T> tmp = head;
-        while (tmp != null) {
+        while (tmp.next != null) {
             System.out.println(tmp.key + ":");
             ((LinkedList<T>)tmp.data).print();
             tmp = tmp.next;
         }
+        System.out.println(tmp.key + ":");
+        ((LinkedList<T>)tmp.data).print();
     }
 }

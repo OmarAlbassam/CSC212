@@ -16,11 +16,6 @@ public class Test {
         
         
 
-        // listOfDocs.findFirst();
-        // while (!listOfDocs.last()) {
-        //     listOfDocs.retrieve().print();
-        //     listOfDocs.findNext();
-        //     System.out.println("-------------------");
-        // } listOfDocs.retrieve().print();
+        
     }
 }

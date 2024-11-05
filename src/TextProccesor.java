@@ -53,10 +53,11 @@ public class TextProccesor {
                 for (int i = 1; i < lineValues.length; i++) {
                     lineContent += lineValues[i];
                 }
-                // If document, then continue processing
-                lineContent = lineContent.toLowerCase();
-                lineContent = lineContent.replaceAll(ALPHANUMERIC_REGEX, ""); // Replace all non-alphanumeric values to blanks
+                
 
+                // If document, then continue processing
+                lineContent = lineContent.toLowerCase().replaceAll(ALPHANUMERIC_REGEX, ""); // Replace all non-alphanumeric values to blanks
+                
                 // Split individual words from the doc's content into an array
                 lineWords = lineContent.split(" ");
                 LinkedList<String> ls = new LinkedList<>();
@@ -65,7 +66,7 @@ public class TextProccesor {
                     if (!stopWords.contains(lineWords[i]))
                         ls.insert(lineWords[i]);
                 }
-
+                
                 listOfDocs.insert(ls);
                 line = input.readLine();
             }
@@ -111,5 +112,12 @@ public class TextProccesor {
             index.insert(listOfDocs.retrieve(), key);
             listOfDocs.findNext();
         }
+
+        listOfDocs.retrieve().findFirst();
+        String key = listOfDocs.retrieve().retrieve();
+        listOfDocs.retrieve().remove();
+        index.insert(listOfDocs.retrieve(), key);
+        
+        listOfDocs.findFirst();
     }
 }
