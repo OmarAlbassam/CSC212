@@ -3,7 +3,7 @@
 public class AVLNode<T> {
 	public int key;
 	public T data;
-	public int height;	// Balance is enum (+1, 0, -1)
+	public int height;	// Must in range (+1, 0, -1)
 	public AVLNode<T> left, right;
 	
 	public AVLNode(int key, T data) {

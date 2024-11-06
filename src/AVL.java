@@ -16,7 +16,7 @@
 // Left-right Rotation
 
 // Balancing a right-heavy node:
-//Left rotation
+// Left rotation
 // Right-left rotation
 
 public class AVL<T> {
@@ -25,10 +25,6 @@ public class AVL<T> {
 
     public AVL() {
         root = current = null;
-    }
-
-    public AVLNode<T> getRoot() {
-        return root;
     }
 
     public boolean empty() {

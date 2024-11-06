@@ -1,4 +1,4 @@
-public class LinkedIndex<T> extends LinkedList<T>  {
+public class LinkedIndex<T> {
     
     private IndexNode<T> head, current;
 
@@ -17,7 +17,7 @@ public class LinkedIndex<T> extends LinkedList<T>  {
             current.next = temp;
         }
     }
-    @Override
+    
     public void remove() {
         if (head == current) {
             head = head.next;
@@ -47,42 +47,42 @@ public class LinkedIndex<T> extends LinkedList<T>  {
         return false;
     }
     
-    @Override
+    
     public boolean full() {
         return false;
     }
 
-    @Override
+    
     public boolean empty() {
         return head == null;
     }
 
-    @Override
+    
     public boolean last() {
         return current.next == null;
     }
-    @Override
+    
     public void findFirst() {
         current = head;
     }
 
-    @Override
+    
     public void findNext() {
         current = current.next;
     }
 
-    @Override
+    
     public T retrieve() {
         return current.data;
     }
 
-    @Override
+    
     public void update(T e) {
         current.data = e;
     }
 
     // Method to print the key alongside the list
-    @Override
+    @SuppressWarnings("unchecked")
     public void print() {
         IndexNode<T> tmp = head;
         while (tmp.next != null) {
