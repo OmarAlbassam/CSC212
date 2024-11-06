@@ -1,11 +1,23 @@
+// The balance factor "BF" of a node denotes the 
+// difference of the heights "H" of the right and
+// left subtree ("node.right" and "node.left"), that is:
+//           BF(node) = H(node.right) - H(node.left)
 
-enum Order {
-    inOrder, postOrder, preOrder
-};
+// Three important cases:
+// 1 - If the balance factor is < 0, the node is said to be left-heavy
+// 2 - If the balance factor is > 0, the node is said to be right-heavy
+// 3 - If the balance factor is = 0, the node is said to be balanced
 
-enum Relative {
-    Root, Parent, LeftChild, RightChild
-};
+// Implemeneted methods height(AVLNode) returns the height of the node, and
+// balanceFactor(AVLNode) returns the balance factor (rightHeight - leftHeight) 
+
+// Balancing a left-heavy node:
+// Right rotation
+// Left-right Rotation
+
+// Balancing a right-heavy node:
+//Left rotation
+// Right-left rotation
 
 public class AVL<T> {
 
@@ -31,192 +43,119 @@ public class AVL<T> {
         return current.data;
     }
 
-    public boolean findKey(int tkey) {
-        AVLNode<T> p = root, q = root;
-
-        if (empty())
-            return false;
-
-        while (p != null) {
-            q = p;
-            if (p.key == tkey) {
-                current = p;
-                return true;
-            } else if (tkey < p.key)
-                p = p.left;
-            else
-                p = p.right;
-        }
-
-        current = q;
-        return false;
-    }
-
     public void update(T val) {
         current.data = val;
     }
 
-    public void insert(int key, T data) { // r is root on first call
-        root = insertNode(new AVLNode<>(key, data), root);
-    }
-
-    private AVLNode<T> insertNode(AVLNode<T> newNode, AVLNode<T> r) {
-        if (r == null)
-            r = new AVLNode<T>(newNode);
-        else if (newNode.key < r.key) {
-            r.left = insertNode(newNode, r.left);
-            if (height(r.right) - height(r.left) == -2) // need to rebalance
-                if (newNode.key < r.left.key)
-                    r = ll_Rotation(r);
-                else
-                    r = lr_Rotation(r);
-        } else if (newNode.key > r.key) {
-            r.right = insertNode(newNode, r.right);
-            if (height(r.right) - height(r.left) == 2) // need to rebalance
-                if (newNode.key > r.right.key)
-                    r = rr_Rotation(r);
-                else
-                    r = rl_Rotation(r);
-        } else
-            ;
-        // Duplicate key; do nothing
-        r.height = max(height(r.left), height(r.right)) + 1;
-        return r;
-    }
-
-    public void delete(int key) {
-        root = deleteNode(root, key);
-    }
-
-    private AVLNode<T> deleteNode(AVLNode<T> root, int key) {
-        // STEP 1: CODE FOR STANDARD BST DELETE HERE (without return)
-        // Search for tkey
-        int k = key;
-        AVLNode<T> p = root;
-        AVLNode<T> q = null; // Parent of p
-        while (p != null) {
-            if (k < p.key) {
-                q = p;
-                p = p.left;
-            } else if (k > p.key) {
-                q = p;
-                p = p.right;
-            } else { // Have found the key 
-                if (p.left != null && p.right != null) { // Deleted node has 2 children
-                    AVLNode<T> min = p.right;
-                    q = p;
-                    while (min.left != null) { // This loop finds min in right subtree
-                        q = min;
-                        min = min.left;
-                    }
-                    // After the loop:
-                    // p is wanted for deletion
-                    // q is parent of min
-                    // min is the min in right subtree
-
-                    // Swapping min & p
-                    p.key = min.key;
-                    p.data = min.data;
-                    k = min.key;
-                    p = min;
-                }
-
-                // Now wanted to be deleted is p
-                if (p.left != null) // if one child on left
-                    p = p.left;
-                else // if one child on right or no children
-                    p = p.right;
-
-                if (q == null)  // No parent for p
-                    root = p;
-                else {
-                    if (k < q.key)
-                        q.left = p;
-                    else
-                        q.right = p;
-                }
-                
-                current = root;
-                break;
+    public boolean findKey(int key) {
+        if (empty())
+            return false;
+    
+        AVLNode<T> tmp = root;
+        while (tmp != null) {
+            if (key < tmp.key)
+                tmp = tmp.left;
+            else if (key > tmp.key)
+                tmp = tmp.right;
+            else {
+                current = tmp;
+                return true;
             }
         }
+        return false;
+    }
+    
 
-        if (root == null) // If the tree has only one node then return
-            return root;
-        // STEP 2: UPDATE HEIGHT OF THE CURRENT NODE
-        root.height = max(height(root.left), height(root.right)) + 1;
-        // STEP 3: GET THE BALANCE FACTOR OF THIS NODE (to check whether this node
-        // became unbalanced)
-        int balance = getBalance(root);
-        // If this node becomes unbalanced, then there are 4 cases
-        // Left Left Case
-        if (balance < -1 && getBalance(root.left) <= 0)
-            return ll_Rotation(root);
-        // Left Right Case
-        if (balance < -1 && getBalance(root.left) > 0)
-            return lr_Rotation(root);
-        // Right Right Case
-        if (balance > 1 && getBalance(root.right) >= 0)
-            return rr_Rotation(root);
-        // Right Left Case
-        if (balance > 1 && getBalance(root.right) < 0)
-            return rl_Rotation(root);
-        return root;
-        
+    public void insert(int key, T val) {
+        root = insertHelper(root, key, val);
     }
 
-    // HELPER METHODS
+
+    // **************** HELPER METHODS ****************
+    private AVLNode<T> insertHelper(AVLNode<T> node, int key, T val) {
+        if (node == null)
+            return new AVLNode<>(key, val);
+    
+        if (key < node.key)
+            node.left = insertHelper(node.left, key, val);
+        else if (key > node.key)
+            node.right = insertHelper(node.right, key, val);
+        else
+            return node; // Duplicate key, do nothing
+    
+        updateHeight(node);
+        return rebalance(node);
+    }
+
     private int height(AVLNode<T> node) {
         return node == null ? -1 : node.height;
     }
 
     private void updateHeight(AVLNode<T> node) {
-        int leftChildHeight = height(node.left),
-            rightChildHeight = height(node.right);
-        node.height = max(leftChildHeight, rightChildHeight) + 1;
+        node.height = max(height(node.left), height(node.right)) + 1;
+    }
+
+    private AVLNode<T> rebalance(AVLNode<T> node) {
+
+        int balanceFactor = balanceFactor(node);
+
+        // Left-heavy?
+        if (balanceFactor < -1) {
+            // Right
+            if (balanceFactor(node.left) <= 0)
+                node = rotateRight(node);
+            // Left Right
+            else {
+                node.left = rotateLeft(node.left);
+                node = rotateRight(node);
+            } 
+        } 
+        // Right-heacy?
+        else if (balanceFactor > 1) {
+            // Left
+            if (balanceFactor(node.right) >= 0)
+                node = rotateLeft(node);
+            // Right Left
+            else {
+                node.right = rotateRight(node.right);
+                node = rotateLeft(node);
+            }
+        }
+        return node;
     }
 
     private int balanceFactor(AVLNode<T> node) {
         return height(node.right) - height(node.left);
     }
 
+    private AVLNode<T> rotateLeft(AVLNode<T> node) {
+
+        AVLNode<T> rightChild = node.right;
+
+        node.right = rightChild.left;
+        rightChild.left = node;
+
+        updateHeight(node);
+        updateHeight(rightChild);
+
+        return rightChild;
+    }
+
+    private AVLNode<T> rotateRight(AVLNode<T> node) {
+
+        AVLNode<T> leftChild = node.left;
+
+        node.left = leftChild.right;
+        leftChild.right = node;
+
+        updateHeight(node);
+        updateHeight(leftChild);
+
+        return leftChild;
+    }
+
     private int max(int a, int b) {
         return a > b ? a : b;
-    }
-
-    private AVLNode<T> rr_Rotation(AVLNode<T> A) {
-        AVLNode<T> B = A.right;
-        A.right = B.left;
-        B.left = A;
-        A.height = max(height(A.left), height(A.right)) + 1;
-        B.height = max(height(B.right), A.height) + 1;
-        return B;
-    }
-
-    private AVLNode<T> ll_Rotation(AVLNode<T> A) {
-        AVLNode<T> B = A.left;
-        A.left = B.right;
-        B.right = A;
-        A.height = max(height(A.left), height(A.right)) + 1;
-        B.height = max(height(B.left), A.height) + 1;
-        return B;
-    }
-
-    private AVLNode<T> lr_Rotation(AVLNode<T> A) {
-        A.left = rr_Rotation(A.left);
-        return ll_Rotation(A);
-    }
-
-    private AVLNode<T> rl_Rotation(AVLNode<T> A) {
-        A.right = ll_Rotation(A.right);
-        return rr_Rotation(A);
-    }
-
-    private int getBalance(AVLNode<T> node) {
-        if (node == null)
-            return 0;
-        return height(node.right) - height(node.left);
-
     }
 
 }
