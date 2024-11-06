@@ -1,8 +1,8 @@
-public class IndexLinkedList<T>  {
+public class LinkedIndex<T> extends LinkedList<T>  {
     
     private IndexNode<T> head, current;
 
-    IndexLinkedList() {
+    LinkedIndex() {
         head = current = null;
     }
 
@@ -17,7 +17,7 @@ public class IndexLinkedList<T>  {
             current.next = temp;
         }
     }
-
+    @Override
     public void remove() {
         if (head == current) {
             head = head.next;
@@ -35,26 +35,6 @@ public class IndexLinkedList<T>  {
         
     }
 
-    public void findFirst() {
-        current = head;
-    }
-
-    public void findNext() {
-        current = current.next;
-    }
-
-    public T retrieve() {
-        return current.data;
-    }
-
-    public boolean last() {
-        return current.next == null;
-    }
-
-    public boolean empty() {
-        return head == null;
-    }
-
     public boolean contains(T val) {
         if (head == null)
             return false;
@@ -65,10 +45,44 @@ public class IndexLinkedList<T>  {
             tmp = tmp.next;
         }
         return false;
+    }
     
+    @Override
+    public boolean full() {
+        return false;
+    }
+
+    @Override
+    public boolean empty() {
+        return head == null;
+    }
+
+    @Override
+    public boolean last() {
+        return current.next == null;
+    }
+    @Override
+    public void findFirst() {
+        current = head;
+    }
+
+    @Override
+    public void findNext() {
+        current = current.next;
+    }
+
+    @Override
+    public T retrieve() {
+        return current.data;
+    }
+
+    @Override
+    public void update(T e) {
+        current.data = e;
     }
 
     // Method to print the key alongside the list
+    @Override
     public void print() {
         IndexNode<T> tmp = head;
         while (tmp.next != null) {

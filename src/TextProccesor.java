@@ -101,7 +101,7 @@ public class TextProccesor {
         return list;
     }
 
-    public void buildIndex(IndexLinkedList<List<String>> index) {
+    public void buildIndex(LinkedIndex<List<String>> index) {
 
         listOfDocs.findFirst();
 

@@ -4,7 +4,7 @@ public class Test {
 
         TextProccesor tp = new TextProccesor();
         LinkedList<String> stopWords = new LinkedList<>();
-        IndexLinkedList<List<String>> index = new IndexLinkedList<>();
+        LinkedIndex<List<String>> index = new LinkedIndex<>();
         
         
         stopWords = (LinkedList<String>)tp.fetchStopWords();
