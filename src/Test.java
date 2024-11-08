@@ -32,6 +32,8 @@ public class Test {
         avl.insert(22, 1);
         avl.insert(1, 1);
         avl.insert(0, 1);
+
+        avl.delete(145);
         
 
         

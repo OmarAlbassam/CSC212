@@ -66,12 +66,17 @@ public class AVL<T> {
         root = insertHelper(root, key, val);
     }
 
+    public void delete(int key) {
+        root = deleteHelper(root, key);
+        current = root;
+    }
 
     // **************** HELPER METHODS ****************
     private AVLNode<T> insertHelper(AVLNode<T> node, int key, T val) {
-        if (node == null)
-            return new AVLNode<>(key, val);
-    
+        if (node == null) {
+            current = new AVLNode<>(key, val);
+            return current;
+        }
         if (key < node.key)
             node.left = insertHelper(node.left, key, val);
         else if (key > node.key)
@@ -80,6 +85,40 @@ public class AVL<T> {
             return node; // Duplicate key, do nothing
     
         updateHeight(node);
+        return rebalance(node);
+    }
+
+    private AVLNode<T> deleteHelper(AVLNode<T> node, int key) {
+        
+        if (node == null) 
+            return null;
+        
+        // BST Recursive deletion
+        if (key < node.key) 
+            node.left = deleteHelper(node.left, key);
+        else if (key > node.key)
+            node.right = deleteHelper(node.right, key);
+        else { // Case: 1 child
+            if (node.left == null)
+                return node.right;
+            else if (node.right == null)
+                return node.left;
+
+            // Case: 2 childeren or no children
+            AVLNode<T> minInRightSubtree = node.right;
+            while (minInRightSubtree.left != null) {
+                minInRightSubtree = minInRightSubtree.left;
+            }
+
+            node.key = minInRightSubtree.key;
+            node.data = minInRightSubtree.data;
+            node.right = deleteHelper(node.right, minInRightSubtree.key);
+        }
+
+        // Update node height
+        updateHeight(node);
+
+        // rebalance if needed 
         return rebalance(node);
     }
 
