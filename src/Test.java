@@ -8,10 +8,10 @@ public class Test {
         // index.print();
 
         LinkedIndex<List<String>> invertedIndex = tp.buildInvertedIndex();
-        invertedIndex.print();
+        // invertedIndex.print();
         
-        
+        AVL<List<String>> avl = tp.buildInvertedIndexAVL(invertedIndex);
 
-        
+        avl.print();
     }
 }

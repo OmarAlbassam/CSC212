@@ -19,6 +19,9 @@
 // Left rotation
 // Right-left rotation
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class AVL<T> {
 
     private AVLNode<T> root, current;
@@ -192,6 +195,44 @@ public class AVL<T> {
             }
         }
         return node;
+    }
+
+    // **************** DEBUGGING METHODS ****************
+    public void print() {
+        if (root == null) {
+            System.out.println("Tree is empty");
+            return;
+        }
+    
+        Queue<AVLNode<List<T>>> queue = new LinkedList<>();
+        queue.add((AVLNode<List<T>>) root);
+    
+        int level = 0;
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size(); // Number of nodes in the current level
+    
+            System.out.println("Level " + level + ":");
+    
+            for (int i = 0; i < levelSize; i++) {
+                AVLNode<List<T>> node = queue.poll();
+    
+                // Print the node key and balance factor
+                System.out.print("Key: " + node.key + ", BF: " + balanceFactor((AVLNode<T>)node) + ", Data: ");
+                node.data.print(); // Print the list data in each node
+    
+                // Add left and right children to the queue if they exist
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
+    
+            System.out.println(); // Newline after each level
+            level++;
+        }
+    
     }
 
 }

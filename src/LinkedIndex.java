@@ -111,6 +111,5 @@ public class LinkedIndex<T> {
         System.out.println(tmp.key + ":");
         ((LinkedList<T>)tmp.data).print();
     }
-
-    
+        
 }

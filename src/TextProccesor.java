@@ -176,4 +176,15 @@ public class TextProccesor {
         return invIndex;
     }
     
+    public AVL<List<String>> buildInvertedIndexAVL(LinkedIndex<List<String>> invIndex) {
+        AVL<List<String>> avl = new AVL<>();
+
+        invIndex.findFirst();
+        while (!invIndex.last()) {
+            avl.insert(invIndex.getKey(), invIndex.retrieve());
+            invIndex.findNext();
+        } avl.insert(invIndex.getKey(), invIndex.retrieve());
+
+        return avl;
+    }
 }
