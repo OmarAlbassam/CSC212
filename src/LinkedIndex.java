@@ -35,13 +35,28 @@ public class LinkedIndex<T> {
         
     }
 
-    public boolean contains(T val) {
+    public T find(T val) {
         if (head == null)
-            return false;
+            return null;
         IndexNode<T> tmp = head;
         while (tmp != null) {
             if (tmp.data.equals(val))
+                return tmp.data;
+            tmp = tmp.next;
+        }
+        return null;
+    }
+
+    public boolean findKey(String val) {
+        if (head == null)
+            return false;
+
+        IndexNode<T> tmp = head;
+        while (tmp != null) {
+            if (tmp.key.equals(val)) { // contains key
+                current = tmp;
                 return true;
+            }
             tmp = tmp.next;
         }
         return false;
@@ -76,6 +91,9 @@ public class LinkedIndex<T> {
         return current.data;
     }
 
+    public String getKey() {
+        return current.key;
+    }
     
     public void update(T e) {
         current.data = e;
@@ -93,4 +111,6 @@ public class LinkedIndex<T> {
         System.out.println(tmp.key + ":");
         ((LinkedList<T>)tmp.data).print();
     }
+
+    
 }

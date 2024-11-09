@@ -1,12 +1,12 @@
 
 
 public class AVLNode<T> {
-	public int key;
+	public String key;
 	public T data;
-	public int height;	// Must in range (+1, 0, -1)
+	public int height;	// Must be in range (+1, 0, -1)
 	public AVLNode<T> left, right;
 	
-	public AVLNode(int key, T data) {
+	public AVLNode(String key, T data) {
 		this.key = key;
 		this.data = data;
 		height = 0;

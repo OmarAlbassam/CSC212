@@ -1,0 +1,515 @@
+{
+    "kind": {
+        "graph": true
+    },
+    "nodes": [
+        {
+            "id": "223",
+            "label": "AVL@13",
+            "color": "lightblue",
+            "shape": "box"
+        },
+        {
+            "id": "224",
+            "label": "AVLNode@114",
+            "shape": "box"
+        },
+        {
+            "id": "225",
+            "label": "AVLNode@73",
+            "shape": "box"
+        },
+        {
+            "id": "226",
+            "label": "Integer@26",
+            "shape": "box"
+        },
+        {
+            "id": "__1@4__",
+            "label": "1",
+            "shape": "box"
+        },
+        {
+            "id": "227",
+            "label": "\"peter\"",
+            "shape": "box"
+        },
+        {
+            "id": "228",
+            "label": "AVLNode@62",
+            "shape": "box"
+        },
+        {
+            "id": "229",
+            "label": "AVLNode@88",
+            "shape": "box"
+        },
+        {
+            "id": "230",
+            "label": "Integer@26",
+            "shape": "box"
+        },
+        {
+            "id": "__3@9__",
+            "label": "3",
+            "shape": "box"
+        },
+        {
+            "id": "231",
+            "label": "\"fahad\"",
+            "shape": "box"
+        },
+        {
+            "id": "232",
+            "label": "AVLNode@24",
+            "shape": "box"
+        },
+        {
+            "id": "233",
+            "label": "AVLNode@114",
+            "shape": "box"
+        },
+        {
+            "id": "239",
+            "label": "Integer@26 \"1\"",
+            "shape": "box"
+        },
+        {
+            "id": "__0@14__",
+            "label": "0",
+            "shape": "box"
+        },
+        {
+            "id": "__0@15__",
+            "label": "0",
+            "shape": "box"
+        },
+        {
+            "id": "__false@16__",
+            "label": "false",
+            "shape": "box"
+        },
+        {
+            "id": "240",
+            "label": "byte[5]@118",
+            "shape": "box"
+        },
+        {
+            "id": "241",
+            "label": "Integer@26",
+            "shape": "box"
+        },
+        {
+            "id": "__0@19__",
+            "label": "0",
+            "shape": "box"
+        },
+        {
+            "id": "242",
+            "label": "\"mohammed\"",
+            "shape": "box"
+        },
+        {
+            "id": "__null@21__",
+            "label": "null",
+            "shape": "box"
+        },
+        {
+            "id": "__null@22__",
+            "label": "null",
+            "shape": "box"
+        },
+        {
+            "id": "243",
+            "label": "Integer@26",
+            "shape": "box"
+        },
+        {
+            "id": "__0@24__",
+            "label": "0",
+            "shape": "box"
+        },
+        {
+            "id": "244",
+            "label": "\"xeng\"",
+            "shape": "box"
+        },
+        {
+            "id": "__null@26__",
+            "label": "null",
+            "shape": "box"
+        },
+        {
+            "id": "__null@27__",
+            "label": "null",
+            "shape": "box"
+        },
+        {
+            "id": "245",
+            "label": "Integer@26 \"1\"",
+            "shape": "box"
+        },
+        {
+            "id": "__0@29__",
+            "label": "0",
+            "shape": "box"
+        },
+        {
+            "id": "__0@30__",
+            "label": "0",
+            "shape": "box"
+        },
+        {
+            "id": "__false@31__",
+            "label": "false",
+            "shape": "box"
+        },
+        {
+            "id": "246",
+            "label": "byte[5]@77",
+            "shape": "box"
+        },
+        {
+            "id": "247",
+            "label": "Integer@26",
+            "shape": "box"
+        },
+        {
+            "id": "__2@34__",
+            "label": "2",
+            "shape": "box"
+        },
+        {
+            "id": "248",
+            "label": "\"ahmed\"",
+            "shape": "box"
+        },
+        {
+            "id": "249",
+            "label": "AVLNode@42",
+            "shape": "box"
+        },
+        {
+            "id": "250",
+            "label": "AVLNode@51",
+            "shape": "box"
+        },
+        {
+            "id": "251",
+            "label": "Integer@26",
+            "shape": "box"
+        },
+        {
+            "id": "__1@39__",
+            "label": "1",
+            "shape": "box"
+        },
+        {
+            "id": "252",
+            "label": "\"peter\"",
+            "shape": "box"
+        },
+        {
+            "id": "253",
+            "label": "AVLNode@62",
+            "shape": "box"
+        },
+        {
+            "id": "254",
+            "label": "AVLNode@88",
+            "shape": "box"
+        },
+        {
+            "id": "__1@43__",
+            "label": "1",
+            "shape": "box"
+        },
+        {
+            "id": "__112@44__",
+            "label": "112",
+            "shape": "box"
+        },
+        {
+            "id": "__101@45__",
+            "label": "101",
+            "shape": "box"
+        },
+        {
+            "id": "__116@46__",
+            "label": "116",
+            "shape": "box"
+        },
+        {
+            "id": "__101@47__",
+            "label": "101",
+            "shape": "box"
+        },
+        {
+            "id": "__114@48__",
+            "label": "114",
+            "shape": "box"
+        },
+        {
+            "id": "255",
+            "label": "Integer@26 \"1\"",
+            "shape": "box"
+        },
+        {
+            "id": "__0@50__",
+            "label": "0",
+            "shape": "box"
+        }
+    ],
+    "edges": [
+        {
+            "from": "223",
+            "to": "224",
+            "label": "current"
+        },
+        {
+            "from": "223",
+            "to": "225",
+            "label": "root"
+        },
+        {
+            "from": "224",
+            "to": "226",
+            "label": "data"
+        },
+        {
+            "from": "224",
+            "to": "__1@4__",
+            "label": "height"
+        },
+        {
+            "from": "224",
+            "to": "227",
+            "label": "key"
+        },
+        {
+            "from": "224",
+            "to": "228",
+            "label": "left"
+        },
+        {
+            "from": "224",
+            "to": "229",
+            "label": "right"
+        },
+        {
+            "from": "225",
+            "to": "230",
+            "label": "data"
+        },
+        {
+            "from": "225",
+            "to": "__3@9__",
+            "label": "height"
+        },
+        {
+            "from": "225",
+            "to": "231",
+            "label": "key"
+        },
+        {
+            "from": "225",
+            "to": "232",
+            "label": "left"
+        },
+        {
+            "from": "225",
+            "to": "233",
+            "label": "right"
+        },
+        {
+            "from": "226",
+            "to": "239",
+            "label": ""
+        },
+        {
+            "from": "227",
+            "to": "__0@14__",
+            "label": "coder"
+        },
+        {
+            "from": "227",
+            "to": "__0@15__",
+            "label": "hash"
+        },
+        {
+            "from": "227",
+            "to": "__false@16__",
+            "label": "hashIsZero"
+        },
+        {
+            "from": "227",
+            "to": "240",
+            "label": "value"
+        },
+        {
+            "from": "228",
+            "to": "241",
+            "label": "data"
+        },
+        {
+            "from": "228",
+            "to": "__0@19__",
+            "label": "height"
+        },
+        {
+            "from": "228",
+            "to": "242",
+            "label": "key"
+        },
+        {
+            "from": "228",
+            "to": "__null@21__",
+            "label": "left"
+        },
+        {
+            "from": "228",
+            "to": "__null@22__",
+            "label": "right"
+        },
+        {
+            "from": "229",
+            "to": "243",
+            "label": "data"
+        },
+        {
+            "from": "229",
+            "to": "__0@24__",
+            "label": "height"
+        },
+        {
+            "from": "229",
+            "to": "244",
+            "label": "key"
+        },
+        {
+            "from": "229",
+            "to": "__null@26__",
+            "label": "left"
+        },
+        {
+            "from": "229",
+            "to": "__null@27__",
+            "label": "right"
+        },
+        {
+            "from": "230",
+            "to": "245",
+            "label": ""
+        },
+        {
+            "from": "231",
+            "to": "__0@29__",
+            "label": "coder"
+        },
+        {
+            "from": "231",
+            "to": "__0@30__",
+            "label": "hash"
+        },
+        {
+            "from": "231",
+            "to": "__false@31__",
+            "label": "hashIsZero"
+        },
+        {
+            "from": "231",
+            "to": "246",
+            "label": "value"
+        },
+        {
+            "from": "232",
+            "to": "247",
+            "label": "data"
+        },
+        {
+            "from": "232",
+            "to": "__2@34__",
+            "label": "height"
+        },
+        {
+            "from": "232",
+            "to": "248",
+            "label": "key"
+        },
+        {
+            "from": "232",
+            "to": "249",
+            "label": "left"
+        },
+        {
+            "from": "232",
+            "to": "250",
+            "label": "right"
+        },
+        {
+            "from": "233",
+            "to": "251",
+            "label": "data"
+        },
+        {
+            "from": "233",
+            "to": "__1@39__",
+            "label": "height"
+        },
+        {
+            "from": "233",
+            "to": "252",
+            "label": "key"
+        },
+        {
+            "from": "233",
+            "to": "253",
+            "label": "left"
+        },
+        {
+            "from": "233",
+            "to": "254",
+            "label": "right"
+        },
+        {
+            "from": "239",
+            "to": "__1@43__",
+            "label": "value"
+        },
+        {
+            "from": "240",
+            "to": "__112@44__",
+            "label": "0"
+        },
+        {
+            "from": "240",
+            "to": "__101@45__",
+            "label": "1"
+        },
+        {
+            "from": "240",
+            "to": "__116@46__",
+            "label": "2"
+        },
+        {
+            "from": "240",
+            "to": "__101@47__",
+            "label": "3"
+        },
+        {
+            "from": "240",
+            "to": "__114@48__",
+            "label": "4"
+        },
+        {
+            "from": "241",
+            "to": "255",
+            "label": ""
+        },
+        {
+            "from": "242",
+            "to": "__0@50__",
+            "label": "coder"
+        }
+    ]
+}

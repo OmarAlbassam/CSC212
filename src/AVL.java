@@ -43,17 +43,17 @@ public class AVL<T> {
         current.data = val;
     }
 
-    public boolean findKey(int key) {
+    public boolean findKey(String key) {
         if (empty())
             return false;
     
         AVLNode<T> tmp = root;
         while (tmp != null) {
-            if (key < tmp.key)
+            if (key.compareTo(tmp.key) < 0)
                 tmp = tmp.left;
-            else if (key > tmp.key)
+            else if (key.compareTo(tmp.key) > 0)
                 tmp = tmp.right;
-            else {
+            else { // key.compareTo(tmp.key) == 0
                 current = tmp;
                 return true;
             }
@@ -62,49 +62,49 @@ public class AVL<T> {
     }
     
 
-    public void insert(int key, T val) {
+    public void insert(String key, T val) {
         root = insertHelper(root, key, val);
     }
 
-    public void delete(int key) {
+    public void delete(String key) {
         root = deleteHelper(root, key);
         current = root;
     }
 
-    // **************** HELPER METHODS ****************
-    private AVLNode<T> insertHelper(AVLNode<T> node, int key, T val) {
+    // **************** INSERT & DELETE HELPERS ****************
+    private AVLNode<T> insertHelper(AVLNode<T> node, String key, T val) {
         if (node == null) {
             current = new AVLNode<>(key, val);
             return current;
         }
-        if (key < node.key)
+        if (key.compareTo(node.key) < 0)
             node.left = insertHelper(node.left, key, val);
-        else if (key > node.key)
+        else if (key.compareTo(node.key) > 0)
             node.right = insertHelper(node.right, key, val);
-        else
+        else // key.compareTo(node.key) == 0
             return node; // Duplicate key, do nothing
     
         updateHeight(node);
         return rebalance(node);
     }
 
-    private AVLNode<T> deleteHelper(AVLNode<T> node, int key) {
+    private AVLNode<T> deleteHelper(AVLNode<T> node, String key) {
         
         if (node == null) 
             return null;
         
         // BST Recursive deletion
-        if (key < node.key) 
+        if (key.compareTo(node.key) < 0) 
             node.left = deleteHelper(node.left, key);
-        else if (key > node.key)
+        else if (key.compareTo(node.key) > 0)
             node.right = deleteHelper(node.right, key);
-        else { // Case: 1 child
+        else { // Case: 1 child or Case: no children
             if (node.left == null)
                 return node.right;
             else if (node.right == null)
                 return node.left;
 
-            // Case: 2 childeren or no children
+            // Case: 2 childeren 
             AVLNode<T> minInRightSubtree = node.right;
             while (minInRightSubtree.left != null) {
                 minInRightSubtree = minInRightSubtree.left;
@@ -122,41 +122,17 @@ public class AVL<T> {
         return rebalance(node);
     }
 
+    // **************** BALANCING METHODS ****************
+    private int max(int a, int b) {
+        return a > b ? a : b;
+    }
+
     private int height(AVLNode<T> node) {
         return node == null ? -1 : node.height;
     }
 
     private void updateHeight(AVLNode<T> node) {
         node.height = max(height(node.left), height(node.right)) + 1;
-    }
-
-    private AVLNode<T> rebalance(AVLNode<T> node) {
-
-        int balanceFactor = balanceFactor(node);
-
-        // Left-heavy?
-        if (balanceFactor < -1) {
-            // Right
-            if (balanceFactor(node.left) <= 0)
-                node = rotateRight(node);
-            // Left Right
-            else {
-                node.left = rotateLeft(node.left);
-                node = rotateRight(node);
-            } 
-        } 
-        // Right-heacy?
-        else if (balanceFactor > 1) {
-            // Left
-            if (balanceFactor(node.right) >= 0)
-                node = rotateLeft(node);
-            // Right Left
-            else {
-                node.right = rotateRight(node.right);
-                node = rotateLeft(node);
-            }
-        }
-        return node;
     }
 
     private int balanceFactor(AVLNode<T> node) {
@@ -189,8 +165,33 @@ public class AVL<T> {
         return leftChild;
     }
 
-    private int max(int a, int b) {
-        return a > b ? a : b;
+    private AVLNode<T> rebalance(AVLNode<T> node) {
+
+        int balanceFactor = balanceFactor(node);
+
+        // Left-heavy?
+        if (balanceFactor < -1) {
+            // Right
+            if (balanceFactor(node.left) <= 0) 
+                node = rotateRight(node);
+            // Left Right
+            else {
+                node.left = rotateLeft(node.left);
+                node = rotateRight(node);
+            } 
+        } 
+        // Right-heacy?
+        else if (balanceFactor > 1) {
+            // Left
+            if (balanceFactor(node.right) >= 0)
+                node = rotateLeft(node);
+            // Right Left
+            else {
+                node.right = rotateRight(node.right);
+                node = rotateLeft(node);
+            }
+        }
+        return node;
     }
 
 }

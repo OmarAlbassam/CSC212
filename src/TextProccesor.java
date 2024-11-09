@@ -91,7 +91,9 @@ public class TextProccesor {
         return list;
     }
 
-    public void buildIndex(LinkedIndex<List<String>> index) {
+    public LinkedIndex<List<String>> buildIndex() {
+
+        LinkedIndex<List<String>> index = new LinkedIndex<>();
 
         listOfDocs.findFirst();
 
@@ -124,5 +126,54 @@ public class TextProccesor {
             l.insert(listOfDocs.retrieve().retrieve());
         index.insert(l, key);
 
+        return index;
+
     }
+    public LinkedIndex<List<String>> buildInvertedIndex() {
+        LinkedIndex<List<String>> invIndex = new LinkedIndex<>();
+    
+        listOfDocs.findFirst();
+        while (!listOfDocs.last()) {
+            listOfDocs.retrieve().findFirst();
+            String docId = listOfDocs.retrieve().retrieve();
+    
+            // Move to the first word in the document content
+            listOfDocs.retrieve().findNext();
+    
+            while (!listOfDocs.retrieve().last()) {
+                String word = listOfDocs.retrieve().retrieve();
+    
+                if (invIndex.findKey(word)) {
+                    List<String> docIds = invIndex.retrieve();
+                    if (!docIds.contains(docId)) {
+                        docIds.insert(docId);
+                    }
+                } else {
+                    LinkedList<String> newDocIds = new LinkedList<>();
+                    newDocIds.insert(docId);
+                    invIndex.insert(newDocIds, word);
+                }
+    
+                listOfDocs.retrieve().findNext();
+            }
+    
+            // Handle the last word in the document
+            String lastWord = listOfDocs.retrieve().retrieve();
+            if (invIndex.findKey(lastWord)) {
+                List<String> docIds = invIndex.retrieve();
+                if (!docIds.contains(docId)) {
+                    docIds.insert(docId);
+                }
+            } else {
+                LinkedList<String> newDocIds = new LinkedList<>();
+                newDocIds.insert(docId);
+                invIndex.insert(newDocIds, lastWord);
+            }
+    
+            listOfDocs.findNext();
+        }
+    
+        return invIndex;
+    }
+    
 }
