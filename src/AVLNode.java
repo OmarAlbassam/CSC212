@@ -1,7 +1,7 @@
 
-
 public class AVLNode<T> {
 	public String key;
+	public int frequency;
 	public T data;
 	public int height;	// Must be in range (+1, 0, -1)
 	public AVLNode<T> left, right;
@@ -11,6 +11,7 @@ public class AVLNode<T> {
 		this.data = data;
 		height = 0;
 		left = right = null;
+		frequency = 1;
 	}
 
 	public AVLNode(AVLNode<T> n) {
@@ -19,7 +20,7 @@ public class AVLNode<T> {
 		height = n.height;
 		left = n.left;
 		right = n.right;
+		frequency = 1;
 	}
 
-	
 }

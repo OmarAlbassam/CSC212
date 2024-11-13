@@ -10,8 +10,15 @@ public class Test {
         LinkedIndex<List<String>> invertedIndex = tp.buildInvertedIndex();
         // invertedIndex.print();
         
-        AVL<List<String>> avl = tp.buildInvertedIndexAVL(invertedIndex);
+        AVL<AVL<String>> avl = tp.buildInvertedIndexAVL(invertedIndex);
 
-        avl.print();
+        // avl.print();
+
+        avl.findKey("market");
+        AVL<String> keys = avl.retrieve();
+
+        // keys.print();
+
+
     }
 }

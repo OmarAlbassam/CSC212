@@ -1,50 +1,39 @@
 
 public class SearchEngine {
     
-    AVL<List<String>> queryResultSet,
-                    rankingResultSet;
+    AVL<AVL<String>> resultSet;
     TextProccesor tp;
     SearchEngine() {
-        queryResultSet = tp.buildInvertedIndexAVL(tp.buildInvertedIndex());
+        resultSet = tp.buildInvertedIndexAVL(tp.buildInvertedIndex());
     }
 
-    public String querySearch(String prompt) {
+    public List<String> querySearch(String prompt) {
         
         LinkedList<String> resultDocs = new LinkedList<>();
-
-        // 1 - market AND sports -> intersect AND
-        // 2 - aerospace OR programming -> union OR
+        LinkedList<LinkedList<String>> finalDocs = new LinkedList<>();
+        // 1 - market AND sports -> intersect AND: {0, 1, 2} AND {1, 2, 3} = {1}
+        // 2 - aerospace OR programming -> union OR: {0, 1, 2} OR {1, 2, 3} = {0,1 ,2, 3}
         // 3 - (data AND computer) OR bagel -> intersect AND then union OR
 
         String[] promptWords = prompt.split(" ");
         for (int i = 0; i < promptWords.length; i++) {
-            if (promptWords[i].equalsIgnoreCase("AND")) {
-                andOperator(promptWords[i - 1], promptWords[i + 1]);
-            } else if (promptWords[i].equalsIgnoreCase("OR")) {
-                orOperator(promptWords[i - 1], promptWords[i + 1]);
+            if (promptWords[i].equalsIgnoreCase("and")) {
+
+                resultSet.findKey(promptWords[i - 1]);
+                AVL<String> docIds1 = resultSet.retrieve();
+
+                resultSet.findKey(promptWords[i + 1]);
+                AVL<String> docIds2 = resultSet.retrieve();
+
+                LinkedList<String> intersectionResult = AVL.intersect(docIds1, docIds2);
+
             }
         }
-
-        String result = "";
-        return result;
+        return resultDocs;
     }
 
-    private List<String> andOperator(String firstWord, String secondWord) {
+    
 
-        LinkedList<String> intersectionResult = new LinkedList<>();
+    
 
-        if (queryResultSet.findKey(firstWord)) {
-            x
-        }
-
-        if (queryResultSet.findKey(secondWord)) {
-
-        }
-
-        return intersectionResult;
-    }
-
-    private void orOperator(String firstWord, String secondWord) {
-
-    }
 }
