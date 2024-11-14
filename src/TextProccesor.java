@@ -6,8 +6,8 @@ import java.io.IOException;
 
 public class TextProccesor {
 
-    private static final String DOCS_PATH = "C:\\Users\\Omar\\Desktop\\CSC212 Data Structres\\Project\\CSC212\\data\\dataset.csv",
-            STOP_WORDS_PATH = "C:\\Users\\Omar\\Desktop\\CSC212 Data Structres\\Project\\CSC212\\data\\stop.txt";
+    private static final String DOCS_PATH = "data\\dataset.csv",
+            STOP_WORDS_PATH = "data\\stop.txt";
     private static final String ALPHANUMERIC_REGEX = "[^a-zA-Z0-9\\s]";
     private File docsFile, stopFile;
 
@@ -222,6 +222,45 @@ public class TextProccesor {
             listOfDocs.retrieve().findNext();
             listOfDocs.findNext();
         }
+
+        listOfDocs.retrieve().findFirst();
+            String docId = listOfDocs.retrieve().retrieve();
+            
+            listOfDocs.retrieve().findNext();
+            while (!listOfDocs.retrieve().last()) {
+
+                String word = listOfDocs.retrieve().retrieve();
+
+                if (avl.findKey(word)) {
+                    avl.retrieve().insert(docId, null);
+                    avl.incrementNode();
+                } 
+                else {
+                    AVL<String> idAVL = new AVL<>();
+
+                    idAVL.insert(docId, null);
+
+                    avl.insert(word, idAVL);
+                }
+
+                listOfDocs.retrieve().findNext();
+            }
+            // Last word in the doc
+            String word = listOfDocs.retrieve().retrieve();
+
+                if (avl.findKey(word)) {
+                    avl.retrieve().insert(docId, null);
+                } 
+                else {
+                    AVL<String> idAVL = new AVL<>();
+
+                    idAVL.insert(docId, null);
+
+                    avl.insert(word, idAVL);
+                }
+
+            listOfDocs.retrieve().findNext();
+            listOfDocs.findNext();
 
         return avl;
     }

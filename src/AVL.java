@@ -20,8 +20,8 @@
 // Right-left rotation
 
 // *** THESE IMPORTS WERE STRICTLY USED FOR DEBUGGING THE PRINT METHOD ***
-                    import java.util.LinkedList;
-                    import java.util.Queue;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class AVL<T> {
 
@@ -48,9 +48,9 @@ public class AVL<T> {
     }
 
     public boolean findKey(String key) {
-        if (empty())
+        if (root == null)
             return false;
-    
+
         AVLNode<T> tmp = root;
         while (tmp != null) {
             if (key.compareTo(tmp.key) < 0)
@@ -66,25 +66,48 @@ public class AVL<T> {
     }
 
     public static AVL<String> intersect(AVL<String> avl1, AVL<String> avl2) {
-        AVL<String> list = new AVL<>(); 
-        intersectHelper(avl1.root, avl2, list);
-        return list;
+        AVL<String> result = new AVL<>();
+        intersectHelper(avl1.root, avl2, result);
+        return result;
     }
 
-    private static void intersectHelper(AVLNode<String> node, AVL<String> avl2, AVL<String> resAvl) {
-        if (node == null) return;
+    private static void intersectHelper(AVLNode<String> node, AVL<String> avl2, AVL<String> resultAvl) {
+        if (node == null)
+            return;
 
-        //traverse left sub tree
-        intersectHelper(node.left, avl2, resAvl);
+        // traverse left sub tree
+        intersectHelper(node.left, avl2, resultAvl);
 
         if (avl2.findKey(node.key)) {
-            resAvl.insert(node.key,null);
+            resultAvl.insert(node.key, null);
         }
-        
-        //traverse right sub tree
-        intersectHelper(node.right, avl2, resAvl);
+
+        // traverse right sub tree
+        intersectHelper(node.right, avl2, resultAvl);
     }
-    
+
+    public static AVL<String> union(AVL<String> avl1, AVL<String> avl2) {
+        AVL<String> result = new AVL<>();
+        unionHelper(avl1.root, result); // Add all nodes from docIds1
+        unionHelper(avl2.root, result); // Add all nodes from docIds2
+        return result;
+    }
+
+    private static void unionHelper(AVLNode<String> node, AVL<String> result) {
+        if (node == null)
+            return;
+
+        // Traverse left subtree
+        unionHelper(node.left, result);
+
+        // Insert node data into the result AVL
+        if (!result.findKey(node.key)) {
+            result.insert(node.key, null);
+        }
+
+        // Traverse right subtree
+        unionHelper(node.right, result);
+    }
 
     public void insert(String key, T val) {
         root = insertHelper(root, key, val);
@@ -107,18 +130,18 @@ public class AVL<T> {
             node.right = insertHelper(node.right, key, val);
         else // key.compareTo(node.key) == 0
             return node; // Duplicate key, do nothing
-    
+
         updateHeight(node);
         return rebalance(node);
     }
 
     private AVLNode<T> deleteHelper(AVLNode<T> node, String key) {
-        
-        if (node == null) 
+
+        if (node == null)
             return null;
-        
+
         // BST Recursive deletion
-        if (key.compareTo(node.key) < 0) 
+        if (key.compareTo(node.key) < 0)
             node.left = deleteHelper(node.left, key);
         else if (key.compareTo(node.key) > 0)
             node.right = deleteHelper(node.right, key);
@@ -128,7 +151,7 @@ public class AVL<T> {
             else if (node.right == null)
                 return node.left;
 
-            // Case: 2 childeren 
+            // Case: 2 childeren
             AVLNode<T> minInRightSubtree = node.right;
             while (minInRightSubtree.left != null) {
                 minInRightSubtree = minInRightSubtree.left;
@@ -142,7 +165,7 @@ public class AVL<T> {
         // Update node height
         updateHeight(node);
 
-        // rebalance if needed 
+        // rebalance if needed
         return rebalance(node);
     }
 
@@ -204,14 +227,14 @@ public class AVL<T> {
         // Left-heavy?
         if (balanceFactor < -1) {
             // Right
-            if (balanceFactor(node.left) <= 0) 
+            if (balanceFactor(node.left) <= 0)
                 node = rotateRight(node);
             // Left Right
             else {
                 node.left = rotateLeft(node.left);
                 node = rotateRight(node);
-            } 
-        } 
+            }
+        }
         // Right-heacy?
         else if (balanceFactor > 1) {
             // Left
@@ -229,69 +252,73 @@ public class AVL<T> {
     // **************** DEBUGGING METHODS ****************
 
     // public static void print(AVL<AVL<String>> outerAVL) {
-    //     printOuterAVLHelper(outerAVL.root, 0);
+    // printOuterAVLHelper(outerAVL.root, 0);
     // }
 
-    // private static void printOuterAVLHelper(AVLNode<AVL<String>> node, int level) {
-    //     if (node != null) {
-    //         printOuterAVLHelper(node.right, level + 1);
+    // private static void printOuterAVLHelper(AVLNode<AVL<String>> node, int level)
+    // {
+    // if (node != null) {
+    // printOuterAVLHelper(node.right, level + 1);
 
-    //         // Print the outer AVL node's level and then its inner AVL keys
-    //         System.out.print("Level " + level + ", (" + node.key + ")" + " -> AVL Keys: ");
-    //         printInnerAVLKeys(node.data);
+    // // Print the outer AVL node's level and then its inner AVL keys
+    // System.out.print("Level " + level + ", (" + node.key + ")" + " -> AVL Keys:
+    // ");
+    // printInnerAVLKeys(node.data);
 
-    //         printOuterAVLHelper(node.left, level + 1);
-    //     }
-    // } 
+    // printOuterAVLHelper(node.left, level + 1);
+    // }
+    // }
 
     // private static void printInnerAVLKeys(AVL<String> innerAVL) {
-    //     printInnerAVLHelper(innerAVL.root);
-    //     System.out.println(); // Newline after printing all keys of one inner AVL
+    // printInnerAVLHelper(innerAVL.root);
+    // System.out.println(); // Newline after printing all keys of one inner AVL
     // }
 
     // private static void printInnerAVLHelper(AVLNode<String> node) {
-    //     if (node != null) {
-    //         printInnerAVLHelper(node.left);
-    //         System.out.print(node.key + " "); // Print each key in the inner AVL
-    //         printInnerAVLHelper(node.right);
-    //     }
+    // if (node != null) {
+    // printInnerAVLHelper(node.left);
+    // System.out.print(node.key + " "); // Print each key in the inner AVL
+    // printInnerAVLHelper(node.right);
+    // }
     // }
 
     @SuppressWarnings("unchecked")
     public void print() {
-        if (root == null) {
-            System.out.println("Tree is empty");
-            return;
-        }
-    
-        Queue<AVLNode<AVL<T>>> queue = new LinkedList<>();
-        queue.add((AVLNode<AVL<T>>) root);
-    
-        int level = 0;
-        while (!queue.isEmpty()) {
-            int levelSize = queue.size(); // Number of nodes in the current level
-    
-            System.out.println("Level " + level + ":");
-    
-            for (int i = 0; i < levelSize; i++) {
-                AVLNode<AVL<T>> node = queue.poll();
-    
-                // Print the node key and balance factor
-                System.out.println("Key: " + node.key + ", BF: " + balanceFactor((AVLNode<T>)node) + ", Frequency: " + node.frequency);
-                // node.data.print(); // Print the list data in each node
-    
-                // Add left and right children to the queue if they exist
-                if (node.left != null) {
-                    queue.add(node.left);
-                }
-                if (node.right != null) {
-                    queue.add(node.right);
-                }
-            }
-    
-            System.out.println(); // Newline after each level
-            level++;
-        }
-    
+    if (root == null) {
+    System.out.println("Tree is empty");
+    return;
+    }
+
+    Queue<AVLNode<AVL<T>>> queue = new LinkedList<>();
+    queue.add((AVLNode<AVL<T>>) root);
+
+    int level = 0;
+    while (!queue.isEmpty()) {
+    int levelSize = queue.size(); // Number of nodes in the current level
+
+    System.out.println("Level " + level + ":");
+
+    for (int i = 0; i < levelSize; i++) {
+    AVLNode<AVL<T>> node = queue.poll();
+
+    // Print the node key and balance factor
+    System.out.println("Key: " + node.key + ", BF: " + balanceFactor((AVLNode<T>)
+    node) + ", Frequency: "
+    + node.frequency);
+    // node.data.print(); // Print the list data in each node
+
+    // Add left and right children to the queue if they exist
+    if (node.left != null) {
+    queue.add(node.left);
+    }
+    if (node.right != null) {
+    queue.add(node.right);
+    }
+    }
+
+    System.out.println(); // Newline after each level
+    level++;
+    }
+
     }
 }
