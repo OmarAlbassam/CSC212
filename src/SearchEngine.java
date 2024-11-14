@@ -1,13 +1,13 @@
 
 public class SearchEngine {
     
-    AVL<AVL<String>> resultSet;
-    TextProccesor tp;
+    private static AVL<AVL<String>> resultSet;
+    private TextProccesor tp;
     SearchEngine() {
         resultSet = tp.buildInvertedIndexAVL(tp.buildInvertedIndex());
     }
 
-    public List<String> querySearch(String prompt) {
+    public static List<String> querySearch(String prompt) {
         
         LinkedList<String> resultDocs = new LinkedList<>();
         LinkedList<LinkedList<String>> finalDocs = new LinkedList<>();
@@ -27,6 +27,7 @@ public class SearchEngine {
 
                 LinkedList<String> intersectionResult = AVL.intersect(docIds1, docIds2);
 
+                intersectionResult.print();
             }
         }
         return resultDocs;
