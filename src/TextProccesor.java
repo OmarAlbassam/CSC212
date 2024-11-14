@@ -6,8 +6,8 @@ import java.io.IOException;
 
 public class TextProccesor {
 
-    private static final String DOCS_PATH = "data/dataset.csv",
-            STOP_WORDS_PATH = "data/stop.txt";
+    private static final String DOCS_PATH = "C:\\Users\\Omar\\Desktop\\CSC212 Data Structres\\Project\\CSC212\\data\\dataset.csv",
+            STOP_WORDS_PATH = "C:\\Users\\Omar\\Desktop\\CSC212 Data Structres\\Project\\CSC212\\data\\stop.txt";
     private static final String ALPHANUMERIC_REGEX = "[^a-zA-Z0-9\\s]";
     private File docsFile, stopFile;
 

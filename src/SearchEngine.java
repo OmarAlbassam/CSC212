@@ -25,7 +25,7 @@ public class SearchEngine {
                 resultSet.findKey(promptWords[i + 1]);
                 AVL<String> docIds2 = resultSet.retrieve();
 
-                LinkedList<String> intersectionResult = AVL.intersect(docIds1, docIds2);
+                AVL<String> intersectionResult = AVL.intersect(docIds1, docIds2);
 
                 intersectionResult.print();
             }

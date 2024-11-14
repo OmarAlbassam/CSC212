@@ -20,8 +20,8 @@
 // Right-left rotation
 
 // *** THESE IMPORTS WERE STRICTLY USED FOR DEBUGGING THE PRINT METHOD ***
-                    // import java.util.LinkedList;
-                    // import java.util.Queue;
+                    import java.util.LinkedList;
+                    import java.util.Queue;
 
 public class AVL<T> {
 
@@ -65,24 +65,24 @@ public class AVL<T> {
         return false;
     }
 
-    public static LinkedList<String> intersect(AVL<String> avl1, AVL<String> avl2) {
-        LinkedList<String> list = new LinkedList<>(); 
+    public static AVL<String> intersect(AVL<String> avl1, AVL<String> avl2) {
+        AVL<String> list = new AVL<>(); 
         intersectHelper(avl1.root, avl2, list);
         return list;
     }
 
-    private static void intersectHelper(AVLNode<String> node, AVL<String> avl2, LinkedList<String> list) {
+    private static void intersectHelper(AVLNode<String> node, AVL<String> avl2, AVL<String> resAvl) {
         if (node == null) return;
 
         //traverse left sub tree
-        intersectHelper(node.left, avl2, list);
+        intersectHelper(node.left, avl2, resAvl);
 
         if (avl2.findKey(node.key)) {
-            list.insert(node.key);
+            resAvl.insert(node.key,null);
         }
-
+        
         //traverse right sub tree
-        intersectHelper(node.right, avl2, list);
+        intersectHelper(node.right, avl2, resAvl);
     }
     
 
@@ -257,41 +257,41 @@ public class AVL<T> {
     //     }
     // }
 
-    // @SuppressWarnings("unchecked")
-    // public void print() {
-    //     if (root == null) {
-    //         System.out.println("Tree is empty");
-    //         return;
-    //     }
+    @SuppressWarnings("unchecked")
+    public void print() {
+        if (root == null) {
+            System.out.println("Tree is empty");
+            return;
+        }
     
-    //     Queue<AVLNode<AVL<T>>> queue = new LinkedList<>();
-    //     queue.add((AVLNode<AVL<T>>) root);
+        Queue<AVLNode<AVL<T>>> queue = new LinkedList<>();
+        queue.add((AVLNode<AVL<T>>) root);
     
-    //     int level = 0;
-    //     while (!queue.isEmpty()) {
-    //         int levelSize = queue.size(); // Number of nodes in the current level
+        int level = 0;
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size(); // Number of nodes in the current level
     
-    //         System.out.println("Level " + level + ":");
+            System.out.println("Level " + level + ":");
     
-    //         for (int i = 0; i < levelSize; i++) {
-    //             AVLNode<AVL<T>> node = queue.poll();
+            for (int i = 0; i < levelSize; i++) {
+                AVLNode<AVL<T>> node = queue.poll();
     
-    //             // Print the node key and balance factor
-    //             System.out.println("Key: " + node.key + ", BF: " + balanceFactor((AVLNode<T>)node) + ", Frequency: " + node.frequency);
-    //             // node.data.print(); // Print the list data in each node
+                // Print the node key and balance factor
+                System.out.println("Key: " + node.key + ", BF: " + balanceFactor((AVLNode<T>)node) + ", Frequency: " + node.frequency);
+                // node.data.print(); // Print the list data in each node
     
-    //             // Add left and right children to the queue if they exist
-    //             if (node.left != null) {
-    //                 queue.add(node.left);
-    //             }
-    //             if (node.right != null) {
-    //                 queue.add(node.right);
-    //             }
-    //         }
+                // Add left and right children to the queue if they exist
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
     
-    //         System.out.println(); // Newline after each level
-    //         level++;
-    //     }
+            System.out.println(); // Newline after each level
+            level++;
+        }
     
-    // }
+    }
 }
