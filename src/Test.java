@@ -23,14 +23,8 @@ public class Test {
         outputField.setFont(new Font("Arial", Font.BOLD, 16));
         outputField.setEditable(false);
         outputField.setBackground(Color.white);
-        outputField.setLineWrap(false);
-        outputField.setWrapStyleWord(false);
-
-        JScrollPane scrollPane = new JScrollPane(outputField);
-        scrollPane.setBounds(50, 140, 500, 200);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        frame.add(scrollPane);
+        outputField.setBounds(50, 140, 500, 200);
+        frame.add(outputField);
 
         JButton booleanButton = new JButton("Boolean Retrieval");
         booleanButton.setBounds(120, 60, 150, 50);
