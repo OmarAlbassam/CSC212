@@ -19,10 +19,15 @@ public class Test {
 
         // //keys.print();
 
-        SearchEngine se = new SearchEngine();
-        AVL<String> avl = se.querySearch("market and sports and weather and warming and business and league and football and omar");
+       // SearchEngine se = new SearchEngine();
+        //AVL<String> avl = se.querySearch("market and sports and weather and warming and business and league and football and omar");
 
-        avl.print();
+       // avl.print();
+
+        //test the change
+       Avl<Avl<String>> avl = t.buildInvertedIndex();
+       avl.findKey();
+       avl.print("sports") 
 
     }
 }

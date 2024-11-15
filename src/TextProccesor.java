@@ -192,8 +192,13 @@ public class TextProccesor {
                 String word = listOfDocs.retrieve().retrieve();
 
                 if (avl.findKey(word)) {
-                    avl.retrieve().insert(docId, null);
-                    avl.incrementNode();
+                    if(avl.retrieve().findKey(docID)){
+                       avl.retrieve().incrementNode();
+                   // issue with result being more than the expected value by 1 solved
+                }
+                else{
+                    avl.retrieve().insert(docID, null);
+                }
                 } 
                 else {
                     AVL<String> idAVL = new AVL<>();
