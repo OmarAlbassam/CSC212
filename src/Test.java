@@ -2,27 +2,20 @@
 public class Test {
     public static void main(String[] args) {
 
-        // TextProccesor tp = new TextProccesor();
-        // tp.fetchData((LinkedList<String>)tp.fetchStopWords());
-        // LinkedIndex<List<String>> index = tp.buildIndex();
-        // // index.print();
-
-        // LinkedIndex<List<String>> invertedIndex = tp.buildInvertedIndex();
-        // // invertedIndex.print();
-
-        // AVL<AVL<String>> avl = tp.buildInvertedIndexAVL(invertedIndex);
-
-        // // avl.print();
-
-        // avl.findKey("market");
-        // AVL<String> keys = avl.retrieve();
-
-        // //keys.print();
-
+        TextProccesor tp = new TextProccesor();
+        tp.fetchData((LinkedList<String>)tp.fetchStopWords());
+        
         SearchEngine se = new SearchEngine();
-        AVL<String> avl = se.querySearch("market and sports and weather and warming and business and league and football and omar");
+        AVL<String> avl = se.rankedSearchAVL("market sports");
+        
+        
+        
+        LinkedPQ pq = avl.makePQ();
+        pq.print();
 
-        avl.print();
+
+        // AVL<String> avl = se.querySearch("market OR sports AND warming");
+        // avl.print();
 
     }
 }

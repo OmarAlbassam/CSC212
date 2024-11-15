@@ -14,13 +14,14 @@ public class AVLNode<T> {
 		frequency = 1;
 	}
 
+	// Copy Constructor
 	public AVLNode(AVLNode<T> n) {
 		key = n.key;
 		data = n.data;
 		height = n.height;
 		left = n.left;
 		right = n.right;
-		frequency = 1;
+		frequency = n.frequency;
 	}
 
 }

@@ -176,7 +176,7 @@ public class TextProccesor {
         return invIndex;
     }
     
-    public AVL<AVL<String>> buildInvertedIndexAVL(LinkedIndex<List<String>> invIndex) {
+    public AVL<AVL<String>> buildInvertedIndexAVL() {
         
         AVL<AVL<String>> avl = new AVL<>();
 
@@ -192,8 +192,10 @@ public class TextProccesor {
                 String word = listOfDocs.retrieve().retrieve();
 
                 if (avl.findKey(word)) {
-                    avl.retrieve().insert(docId, null);
-                    avl.incrementNode();
+                    if (avl.retrieve().findKey(docId))
+                        avl.retrieve().incrementNode();
+                    else 
+                        avl.retrieve().insert(docId, null);
                 } 
                 else {
                     AVL<String> idAVL = new AVL<>();
@@ -232,8 +234,10 @@ public class TextProccesor {
                 String word = listOfDocs.retrieve().retrieve();
 
                 if (avl.findKey(word)) {
-                    avl.retrieve().insert(docId, null);
-                    avl.incrementNode();
+                    if (avl.retrieve().findKey(docId)) // Same word in same document
+                        avl.retrieve().incrementNode(); // then increment
+                    else 
+                        avl.retrieve().insert(docId, null); // otherwise insert new doc id
                 } 
                 else {
                     AVL<String> idAVL = new AVL<>();

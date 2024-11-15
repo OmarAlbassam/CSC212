@@ -7,14 +7,34 @@ public class SearchEngine {
     SearchEngine() {
         tp = new TextProccesor();
         tp.fetchData(tp.fetchStopWords());
-        resultSet = tp.buildInvertedIndexAVL(tp.buildInvertedIndex());
+        resultSet = tp.buildInvertedIndexAVL();
+    }
+
+    // public List<String> rankedSearch(String prompt) {
+
+    //     AVL<String> resultAVL = rankedSearchAVL(prompt);
+
+
+
+    // }
+
+    public AVL<String> rankedSearchAVL(String prompt) {
+
+        String[] promptWords = prompt.split(" ");
+        AVL<String> results = new AVL<>();
+
+        for (String word : promptWords) {
+            if (!resultSet.findKey(word)) continue;
+
+            results.insertTreeWithFrequency(resultSet.retrieve());
+        }
+        return results;
     }
 
     public AVL<String> querySearch(String prompt) {
 
         long startTime = System.nanoTime();
 
-        AVL<String> finalResult = new AVL<>();
         // sport omar AND car AND house left AND OR
         String[] postfixExpression = postfix(prompt);
         LinkedStack<AVL<String>> resultStack = new LinkedStack<>();
@@ -109,43 +129,5 @@ public class SearchEngine {
     private boolean isOperator(String operator) {
         return operator.equalsIgnoreCase("and") || operator.equalsIgnoreCase("or");
     }
-
-    // private AVL<String> andOperator(AVL<String> avl1, AVL<String> avl2) {
-    // AVL<String> result = null;
-
-    // AVL<String> docIds1 = null;
-    // AVL<String> docIds2 = null;
-    // if (resultSet.findKey(promptWords[i - 1]))
-    // docIds1 = resultSet.retrieve();
-
-    // if (resultSet.findKey(promptWords[i + 1]))
-    // docIds2 = resultSet.retrieve();
-
-    // if (docIds1 == null || docIds2 == null)
-    // continue;
-
-    // AVL<String> intersectionResult = AVL.intersect(docIds1, docIds2);
-
-    // intersectionResult.print();
-
-    // return result;
-    // }
-
-    // private AVL<String> orOperator(AVL<String> avl1, AVL<String> avl2) {
-    // AVL<String> docIds1 = null;
-    // AVL<String> docIds2 = null;
-    // if (resultSet.findKey(promptWords[i - 1]))
-    // docIds1 = resultSet.retrieve();
-
-    // if (resultSet.findKey(promptWords[i + 1]))
-    // docIds2 = resultSet.retrieve();
-
-    // if (docIds1 == null || docIds2 == null)
-    // continue;
-
-    // AVL<String> unionResult = AVL.union(docIds1, docIds2);
-
-    // unionResult.print();
-    // }
 
 }
