@@ -8,7 +8,7 @@ public class TextProccesor {
 
     private static final String DOCS_PATH = "data\\dataset.csv",
             STOP_WORDS_PATH = "data\\stop.txt";
-    private static final String ALPHANUMERIC_REGEX = "[^a-zA-Z0-9\\s]";
+    private static final String ALPHANUMERIC_REGEX = "[^a-zA-Z0-9\\s-]";
     private File docsFile, stopFile;
 
     private LinkedList<List<String>> listOfDocs; // ListOfDocs -> List<String> -> {docID, firstWord, ..., lastWord}
@@ -46,9 +46,11 @@ public class TextProccesor {
                 }
 
                 // If document, then continue processing
-                lineContent = lineContent.toLowerCase().replaceAll(ALPHANUMERIC_REGEX, ""); // Replace all
-                                                                                            // non-alphanumeric values
-                                                                                            // to blanks
+                lineContent = lineContent.toLowerCase()
+                            .replaceAll(ALPHANUMERIC_REGEX, "")
+                            .replaceAll("-", " "); // Replace all
+                                                                    // non-alphanumeric values
+                                                                    // to blanks
 
                 // Split individual words from the doc's content into an array
                 lineWords = lineContent.split(" ");
