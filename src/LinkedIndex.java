@@ -1,4 +1,4 @@
-public class LinkedIndex<T> extends LinkedList<T>  {
+public class LinkedIndex<T> {
     
     private IndexNode<T> head, current;
 
@@ -17,7 +17,7 @@ public class LinkedIndex<T> extends LinkedList<T>  {
             current.next = temp;
         }
     }
-    @Override
+    
     public void remove() {
         if (head == current) {
             head = head.next;
@@ -35,54 +35,72 @@ public class LinkedIndex<T> extends LinkedList<T>  {
         
     }
 
-    public boolean contains(T val) {
+    public T find(T val) {
         if (head == null)
-            return false;
+            return null;
         IndexNode<T> tmp = head;
         while (tmp != null) {
             if (tmp.data.equals(val))
+                return tmp.data;
+            tmp = tmp.next;
+        }
+        return null;
+    }
+
+    public boolean findKey(String val) {
+        if (head == null)
+            return false;
+
+        IndexNode<T> tmp = head;
+        while (tmp != null) {
+            if (tmp.key.equals(val)) { // contains key
+                current = tmp;
                 return true;
+            }
             tmp = tmp.next;
         }
         return false;
     }
     
-    @Override
+    
     public boolean full() {
         return false;
     }
 
-    @Override
+    
     public boolean empty() {
         return head == null;
     }
 
-    @Override
+    
     public boolean last() {
         return current.next == null;
     }
-    @Override
+    
     public void findFirst() {
         current = head;
     }
 
-    @Override
+    
     public void findNext() {
         current = current.next;
     }
 
-    @Override
+    
     public T retrieve() {
         return current.data;
     }
 
-    @Override
+    public String getKey() {
+        return current.key;
+    }
+    
     public void update(T e) {
         current.data = e;
     }
 
     // Method to print the key alongside the list
-    @Override
+    @SuppressWarnings("unchecked")
     public void print() {
         IndexNode<T> tmp = head;
         while (tmp.next != null) {
@@ -93,4 +111,5 @@ public class LinkedIndex<T> extends LinkedList<T>  {
         System.out.println(tmp.key + ":");
         ((LinkedList<T>)tmp.data).print();
     }
+        
 }

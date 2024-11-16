@@ -1,10 +1,11 @@
 
-public class LinkedList<T> implements List<T> {
 
-    private Node<T> head;
-    private Node<T> current;
+public class ResultList {
     
-    LinkedList() {
+    private ResultNode head;
+    private ResultNode current;
+    
+    ResultList() {
         head = current = null;
     }
 
@@ -18,23 +19,27 @@ public class LinkedList<T> implements List<T> {
     }
 
     
-    public T retrieve() {
+    public String retrieve() {
         return current.data;
     }
 
     
-    public void update(T e) {
+    public void update(String e) {
         current.data = e;
     }
 
+    public int getFrequency() {
+        return current.frequency;
+    }
+
     
-    public void insert(T e) {
-        Node<T> temp;
+    public void insert(String e, int freq) {
+        ResultNode temp;
         if (empty()) {
-            head = current = new Node<T>(e);
+            head = current = new ResultNode(e, freq);
         } else {
             temp = current.next;
-            current.next = new Node<T>(e);
+            current.next = new ResultNode(e, freq);
             current = current.next;
             current.next = temp;
         }
@@ -45,7 +50,7 @@ public class LinkedList<T> implements List<T> {
         if (head == current) {
             head = head.next;
         } else {
-            Node<T> tmp = head;
+            ResultNode tmp = head;
             while (tmp.next != current) 
                 tmp = tmp.next;
             tmp.next = current.next;
@@ -83,16 +88,16 @@ public class LinkedList<T> implements List<T> {
             return;
         current = head;
         while (current.next != null) {
-            System.out.print(current.data + " -> ");
+            System.out.print(current.data + ":" + current.frequency + " -> ");
             current = current.next;
         }
         System.out.println(current.data);
     }
 
-    public boolean contains(T val) {
+    public boolean contains(String val) {
         if (head == null)
             return false;
-        Node<T> tmp = head;
+        ResultNode tmp = head;
         while (tmp != null) {
             if (tmp.data.equals(val))
                 return true;
@@ -101,19 +106,4 @@ public class LinkedList<T> implements List<T> {
         return false;
     }
 
-    public String result() {
-        
-        if (head == null)
-            return "No Results";
- 
-        String result = "{";
-        Node<T> tmp = head;
-        while (tmp.next != null) {
-            result += tmp.data + ", ";
-            tmp = tmp.next;
-        } result += tmp.data + "}";
-
-        return result;
-    }
-    
 }
