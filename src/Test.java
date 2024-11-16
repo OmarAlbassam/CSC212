@@ -35,18 +35,38 @@ public class Test {
         JButton booleanButton = new JButton("Boolean Retrieval");
         booleanButton.setBounds(120, 60, 150, 50);
         booleanButton.addActionListener(e -> {
+
+            long startTime = System.nanoTime();
+
             String input = inputField.getText();
+            if (input.equals("")) // This is to handle empty search box retreival requests
+                return;
             String result = booleanQueryAction(input);
             outputField.setText(result);
+
+            long finishTime = System.nanoTime();
+            long durationInMillis = (finishTime - startTime) / 1_000_000;
+
+            System.out.println("Query finished at " + durationInMillis + " ms.");
         });
         frame.add(booleanButton);
     
         JButton rankedButton = new JButton("Ranked Retrieval");
         rankedButton.setBounds(320, 60, 150, 50);
         rankedButton.addActionListener(e -> {
+
+            long startTime = System.nanoTime();
+
             String input = inputField.getText();
-            String result = rankedRetievalAction(input);
+            if (input.equals("")) // This is to handle empty search box retreival requests
+                return;
+            String result = rankedRetrievalAction(input);
             outputField.setText(result);
+
+            long finishTime = System.nanoTime();
+            long durationInMillis = (finishTime - startTime) / 1_000_000;
+
+            System.out.println("Retrieval finished at " + durationInMillis + " ms.");
         });
         frame.add(rankedButton);
     
@@ -54,7 +74,7 @@ public class Test {
     }
     
 
-    public static String rankedRetievalAction(String in) {
+    public static String rankedRetrievalAction(String in) {
         AVL<String> out = s.rankedSearchAVL(in);
         LinkedPQ pq = out.makePQ();
         return pq.result();

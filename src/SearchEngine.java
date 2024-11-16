@@ -10,17 +10,9 @@ public class SearchEngine {
         resultSet = tp.buildInvertedIndexAVL();
     }
 
-    // public List<String> rankedSearch(String prompt) {
-
-    //     AVL<String> resultAVL = rankedSearchAVL(prompt);
-
-
-
-    // }
-
     public AVL<String> rankedSearchAVL(String prompt) {
 
-        String[] promptWords = prompt.split(" ");
+        String[] promptWords = prompt.toLowerCase().split(" ");
         AVL<String> results = new AVL<>();
 
         for (String word : promptWords) {
@@ -33,7 +25,6 @@ public class SearchEngine {
 
     public AVL<String> querySearch(String prompt) {
 
-        long startTime = System.nanoTime();
 
         // sport omar AND car AND house left AND OR
         String[] postfixExpression = postfix(prompt);
@@ -65,9 +56,6 @@ public class SearchEngine {
                 }
             }
         }
-
-        long finishTime = System.nanoTime();
-        System.out.println("Finished at " + (((double)finishTime - (double)startTime) / 1000000000) + " seconds");
 
         return resultStack.empty() ? new AVL<>() : resultStack.pop();
     }

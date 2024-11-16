@@ -102,6 +102,10 @@ public class LinkedList<T> implements List<T> {
     }
 
     public String result() {
+        
+        if (head == null)
+            return "No Results";
+ 
         String result = "{";
         Node<T> tmp = head;
         while (tmp.next != null) {

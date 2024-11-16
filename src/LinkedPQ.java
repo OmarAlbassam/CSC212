@@ -54,6 +54,9 @@ public class LinkedPQ {
 	}
 
 	public String result() {
+		if (head == null)
+			return "No Results";
+		
 		String result = "Document ID\t\tScore\n";
 		PQNode tmp = head;
 
