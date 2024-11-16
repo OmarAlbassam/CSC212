@@ -100,5 +100,16 @@ public class LinkedList<T> implements List<T> {
         }
         return false;
     }
+
+    public String result() {
+        String result = "{";
+        Node<T> tmp = head;
+        while (tmp.next != null) {
+            result += tmp.data + ", ";
+            tmp = tmp.next;
+        } result += tmp.data + "}";
+
+        return result;
+    }
     
 }

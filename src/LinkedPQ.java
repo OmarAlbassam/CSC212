@@ -53,28 +53,40 @@ public class LinkedPQ {
 		}
 	}
 
-	public String Result() {
-		String result = "";
+	public String result() {
+		String result = "Document ID\t\tScore\n";
 		PQNode tmp = head;
-		int j = 0;// to add \n after 8 iterations so it fills the lines
-		for (int i = 0; i < length(); i++) {
-			if (tmp.next != null) {
-				result += "( "+tmp.data + " : " + tmp.priority+" ) ";
-				if (j == 7) {
-					result += "\n";
-					j = 0;
-				} else 
-					j++;
-				
-			} else {
-				result += "( "+tmp.data + " : " + tmp.priority+" ) "; // Append with a newline
-			}
 
+		while (tmp != null) {
+			result += tmp.data + "\t\t" + tmp.priority + "\n";
 			tmp = tmp.next;
 		}
-		if (result.isEmpty())
-			result = "Not Found";
+
 		return result;
 	}
+
+	// public String Result() {
+	// 	String result = "";
+	// 	PQNode tmp = head;
+	// 	int j = 0;// to add \n after 8 iterations so it fills the lines
+	// 	for (int i = 0; i < length(); i++) {
+	// 		if (tmp.next != null) {
+	// 			result += "( "+tmp.data + " : " + tmp.priority+" ) ";
+	// 			if (j == 7) {
+	// 				result += "\n";
+	// 				j = 0;
+	// 			} else 
+	// 				j++;
+				
+	// 		} else {
+	// 			result += "( "+tmp.data + " : " + tmp.priority+" ) "; // Append with a newline
+	// 		}
+
+	// 		tmp = tmp.next;
+	// 	}
+	// 	if (result.isEmpty())
+	// 		result = "Not Found";
+	// 	return result;
+	// }
 
 }

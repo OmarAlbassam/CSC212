@@ -253,6 +253,22 @@ public class AVL<T> {
         return node;
     }
 
+    public List<String> makeList() {
+        LinkedList<String> list = new LinkedList<>();
+        makeListHelper(root, list);
+        return list;
+    }
+
+    private void makeListHelper(AVLNode<T> node, List<String> list) {
+        if (node == null) return;
+
+        makeListHelper(node.left, list);
+
+        list.insert(node.key);
+
+        makeListHelper(node.right, list);
+    }
+
     public LinkedPQ makePQ() {
         LinkedPQ queue = new LinkedPQ();
         makePQHelper(root, queue);
@@ -280,9 +296,7 @@ public class AVL<T> {
         // Traverse the left subtree
         insertTreeWithFrequencyHelper(node.left, newTree);
 
-        // Insert the current key into the new tree
-        AVLNode<T> newNode = new AVLNode<>(node);
-        
+        // Insert the current key into the new tree        
         if (!newTree.findKey(node.key)) {
             newTree.insert(node.key, null);
             newTree.current.frequency = node.frequency;
