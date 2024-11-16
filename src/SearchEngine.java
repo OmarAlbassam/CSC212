@@ -10,7 +10,7 @@ public class SearchEngine {
         resultSet = tp.buildInvertedIndexAVL();
     }
 
-    public AVL<String> rankedSearchAVL(String prompt) {
+    public AVL<String> rankedSearch(String prompt) {
 
         String[] promptWords = prompt.toLowerCase().split(" ");
         AVL<String> results = new AVL<>();
@@ -27,7 +27,7 @@ public class SearchEngine {
 
 
         // sport omar AND car AND house left AND OR
-        String[] postfixExpression = postfix(prompt);
+        String[] postfixExpression = postfix(prompt.toLowerCase());
         LinkedStack<AVL<String>> resultStack = new LinkedStack<>();
 
         for (String token : postfixExpression) {
@@ -47,7 +47,7 @@ public class SearchEngine {
                 AVL<String> termAVL = null;
                 if (resultSet.findKey(token)) 
                     termAVL = resultSet.retrieve(); 
-              
+                
                 if (termAVL != null) {
                     resultStack.push(termAVL);
                 } else {

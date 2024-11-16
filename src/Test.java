@@ -75,7 +75,7 @@ public class Test {
     
 
     public static String rankedRetrievalAction(String in) {
-        AVL<String> out = s.rankedSearchAVL(in);
+        AVL<String> out = s.rankedSearch(in);
         LinkedPQ pq = out.makePQ();
         return pq.result();
     }
