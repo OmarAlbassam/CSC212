@@ -20,8 +20,8 @@
 // Right-left rotation
 
 // *** THESE IMPORTS WERE STRICTLY USED FOR DEBUGGING THE PRINT METHOD ***
-import java.util.LinkedList;
-import java.util.Queue;
+// import java.util.LinkedList;
+// import java.util.Queue;
 
 public class AVL<T> {
 
@@ -173,6 +173,10 @@ public class AVL<T> {
         current.frequency++;
     }
 
+    public String getKey() {
+        return current.key;
+    }
+
     public int getFrequency() {
         return current.frequency;
     }
@@ -249,6 +253,61 @@ public class AVL<T> {
         return node;
     }
 
+    public List<String> makeList() {
+        LinkedList<String> list = new LinkedList<>();
+        makeListHelper(root, list);
+        return list;
+    }
+
+    private void makeListHelper(AVLNode<T> node, List<String> list) {
+        if (node == null) return;
+
+        makeListHelper(node.left, list);
+
+        list.insert(node.key);
+
+        makeListHelper(node.right, list);
+    }
+
+    public LinkedPQ makePQ() {
+        LinkedPQ queue = new LinkedPQ();
+        makePQHelper(root, queue);
+        return queue;
+    }
+
+    private void makePQHelper(AVLNode<T> node, LinkedPQ queue) {
+        if (node == null) return;
+
+        makePQHelper(node.left, queue);
+
+        queue.enqueue(node.key, node.frequency);
+
+        makePQHelper(node.right, queue);
+    }
+
+    // Ranked Retrieval Methods
+    public void insertTreeWithFrequency(AVL<T> avl) {
+        insertTreeWithFrequencyHelper(avl.root, this);
+    }
+
+    private void insertTreeWithFrequencyHelper(AVLNode<T> node, AVL<T> newTree) {
+        if (node == null) return;
+
+        // Traverse the left subtree
+        insertTreeWithFrequencyHelper(node.left, newTree);
+
+        // Insert the current key into the new tree        
+        if (!newTree.findKey(node.key)) {
+            newTree.insert(node.key, null);
+            newTree.current.frequency = node.frequency;
+        } else 
+            newTree.current.frequency += node.frequency;
+
+
+        // Traverse the right subtree
+        insertTreeWithFrequencyHelper(node.right, newTree);
+    }
+
     // **************** DEBUGGING METHODS ****************
 
     // public static void print(AVL<AVL<String>> outerAVL) {
@@ -282,43 +341,43 @@ public class AVL<T> {
     // }
     // }
 
-    @SuppressWarnings("unchecked")
-    public void print() {
-    if (root == null) {
-    System.out.println("Tree is empty");
-    return;
-    }
+    // @SuppressWarnings("unchecked")
+    // public void print() {
+    // if (root == null) {
+    // System.out.println("Tree is empty");
+    // return;
+    // }
 
-    Queue<AVLNode<AVL<T>>> queue = new LinkedList<>();
-    queue.add((AVLNode<AVL<T>>) root);
+    // Queue<AVLNode<AVL<T>>> queue = new LinkedList<>();
+    // queue.add((AVLNode<AVL<T>>) root);
 
-    int level = 0;
-    while (!queue.isEmpty()) {
-    int levelSize = queue.size(); // Number of nodes in the current level
+    // int level = 0;
+    // while (!queue.isEmpty()) {
+    // int levelSize = queue.size(); // Number of nodes in the current level
 
-    System.out.println("Level " + level + ":");
+    // System.out.println("Level " + level + ":");
 
-    for (int i = 0; i < levelSize; i++) {
-    AVLNode<AVL<T>> node = queue.poll();
+    // for (int i = 0; i < levelSize; i++) {
+    //     AVLNode<AVL<T>> node = queue.poll();
 
-    // Print the node key and balance factor
-    System.out.println("Key: " + node.key + ", BF: " + balanceFactor((AVLNode<T>)
-    node) + ", Frequency: "
-    + node.frequency);
-    // node.data.print(); // Print the list data in each node
+    //     // Print the node key and balance factor
+    //     System.out.println("Key: " + node.key + ", BF: " + balanceFactor((AVLNode<T>)
+    //     node) + ", Frequency: "
+    //     + node.frequency);
+    //     // node.data.print(); // Print the list data in each node
 
-    // Add left and right children to the queue if they exist
-    if (node.left != null) {
-    queue.add(node.left);
-    }
-    if (node.right != null) {
-    queue.add(node.right);
-    }
-    }
+    //     // Add left and right children to the queue if they exist
+    //     if (node.left != null) {
+    //     queue.add(node.left);
+    //     }
+    //     if (node.right != null) {
+    //     queue.add(node.right);
+    // }
+    // }
 
-    System.out.println(); // Newline after each level
-    level++;
-    }
+    // System.out.println(); // Newline after each level
+    // level++;
+    // }
 
-    }
+    // }
 }

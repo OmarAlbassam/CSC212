@@ -100,5 +100,60 @@ public class LinkedList<T> implements List<T> {
         }
         return false;
     }
-    
+
+    public String result() {
+        
+        if (head == null)
+            return "No Results";
+ 
+        String result = "{";
+        Node<T> tmp = head;
+        while (tmp.next != null) {
+            result += tmp.data + ", ";
+            tmp = tmp.next;
+        } result += tmp.data + "}";
+
+        return result;
+    }
+
+    public LinkedList<T> intersect (LinkedList<T> l1){
+        LinkedList<T> tmpList = new LinkedList<T>();
+        Node<T> tmp = head;
+
+        while (!tmp.equals(null)){
+        if(l1.contains(tmp.data))
+        tmpList.insert(tmp.data);
+        tmp = tmp.next;
+        }
+        return tmpList;
+    }
+
+    public LinkedList<T> union (LinkedList<T> l1){
+        LinkedList<T> tmpList = new LinkedList<T>();
+        Node<T> tmp = head;
+
+        while(tmp != null){
+            tmpList.insert(tmp.data);
+            tmp = tmp.next;
+        }
+        l1.findFirst();
+        while(!l1.last()){
+            if(tmpList.contains(null)){
+
+            }
+            else{
+                tmpList.insert(l1.retrieve());
+            }
+            l1.findNext(); 
+        }
+        if(tmpList.contains(null)){
+
+        }
+        else{
+            tmpList.insert(l1.retrieve());
+
+        }
+        return tmpList;
+    }
+
 }

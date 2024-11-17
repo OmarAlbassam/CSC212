@@ -1,22 +1,35 @@
 
 public class SearchEngine {
 
-    private AVL<AVL<String>> resultSet;
+    private AVL<AVL<String>> resultSetAVL;
+    private LinkedIndex<List<String>> resultSetList;
     private TextProccesor tp;
 
     SearchEngine() {
         tp = new TextProccesor();
         tp.fetchData(tp.fetchStopWords());
-        resultSet = tp.buildInvertedIndexAVL(tp.buildInvertedIndex());
+        resultSetAVL = tp.buildInvertedIndexAVL();
+        resultSetList = tp.buildInvertedIndex();
     }
 
-    public AVL<String> querySearch(String prompt) {
+    public AVL<String> rankedSearchAVL(String prompt) {
 
-        long startTime = System.nanoTime();
+        String[] promptWords = prompt.toLowerCase().split(" ");
+        AVL<String> results = new AVL<>();
 
-        AVL<String> finalResult = new AVL<>();
+        for (String word : promptWords) {
+            if (!resultSetAVL.findKey(word)) continue;
+
+            results.insertTreeWithFrequency(resultSetAVL.retrieve());
+        }
+        return results;
+    }
+
+    public AVL<String> querySearchAVL(String prompt) {
+
+
         // sport omar AND car AND house left AND OR
-        String[] postfixExpression = postfix(prompt);
+        String[] postfixExpression = postfix(prompt.toLowerCase());
         LinkedStack<AVL<String>> resultStack = new LinkedStack<>();
 
         for (String token : postfixExpression) {
@@ -34,9 +47,9 @@ public class SearchEngine {
             } else {
                 // Retrieve the AVL<String> for the term from the term index
                 AVL<String> termAVL = null;
-                if (resultSet.findKey(token)) 
-                    termAVL = resultSet.retrieve(); 
-              
+                if (resultSetAVL.findKey(token)) 
+                    termAVL = resultSetAVL.retrieve(); 
+                
                 if (termAVL != null) {
                     resultStack.push(termAVL);
                 } else {
@@ -46,12 +59,16 @@ public class SearchEngine {
             }
         }
 
-        long finishTime = System.nanoTime();
-        System.out.println("Finished at " + (((double)finishTime - (double)startTime) / 1000000000) + " seconds");
-
         return resultStack.empty() ? new AVL<>() : resultStack.pop();
     }
 
+    public LinkedList<String> rankedSearchList(String prompt){
+        
+    }
+
+    public LinkedList<String> querySearchList(String prompt) {
+
+    }
     // helpers*
     private String[] postfix(String prompt) {
         LinkedStack<String> operatorStack = new LinkedStack<>();
@@ -110,42 +127,7 @@ public class SearchEngine {
         return operator.equalsIgnoreCase("and") || operator.equalsIgnoreCase("or");
     }
 
-    // private AVL<String> andOperator(AVL<String> avl1, AVL<String> avl2) {
-    // AVL<String> result = null;
+    
 
-    // AVL<String> docIds1 = null;
-    // AVL<String> docIds2 = null;
-    // if (resultSet.findKey(promptWords[i - 1]))
-    // docIds1 = resultSet.retrieve();
-
-    // if (resultSet.findKey(promptWords[i + 1]))
-    // docIds2 = resultSet.retrieve();
-
-    // if (docIds1 == null || docIds2 == null)
-    // continue;
-
-    // AVL<String> intersectionResult = AVL.intersect(docIds1, docIds2);
-
-    // intersectionResult.print();
-
-    // return result;
-    // }
-
-    // private AVL<String> orOperator(AVL<String> avl1, AVL<String> avl2) {
-    // AVL<String> docIds1 = null;
-    // AVL<String> docIds2 = null;
-    // if (resultSet.findKey(promptWords[i - 1]))
-    // docIds1 = resultSet.retrieve();
-
-    // if (resultSet.findKey(promptWords[i + 1]))
-    // docIds2 = resultSet.retrieve();
-
-    // if (docIds1 == null || docIds2 == null)
-    // continue;
-
-    // AVL<String> unionResult = AVL.union(docIds1, docIds2);
-
-    // unionResult.print();
-    // }
 
 }

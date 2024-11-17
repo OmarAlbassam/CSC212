@@ -6,9 +6,9 @@ import java.io.IOException;
 
 public class TextProccesor {
 
-    private static final String DOCS_PATH = "data\\dataset.csv",
-            STOP_WORDS_PATH = "data\\stop.txt";
-    private static final String ALPHANUMERIC_REGEX = "[^a-zA-Z0-9\\s]";
+    private static final String DOCS_PATH = "data/dataset.csv",
+            STOP_WORDS_PATH = "data/stop.txt";
+    private static final String ALPHANUMERIC_REGEX = "[^a-zA-Z0-9\\s-]";
     private File docsFile, stopFile;
 
     private LinkedList<List<String>> listOfDocs; // ListOfDocs -> List<String> -> {docID, firstWord, ..., lastWord}
@@ -46,9 +46,11 @@ public class TextProccesor {
                 }
 
                 // If document, then continue processing
-                lineContent = lineContent.toLowerCase().replaceAll(ALPHANUMERIC_REGEX, ""); // Replace all
-                                                                                            // non-alphanumeric values
-                                                                                            // to blanks
+                lineContent = lineContent.toLowerCase()
+                            .replaceAll(ALPHANUMERIC_REGEX, "")
+                            .replaceAll("-", " "); // Replace all
+                                                                    // non-alphanumeric values
+                                                                    // to blanks
 
                 // Split individual words from the doc's content into an array
                 lineWords = lineContent.split(" ");
@@ -176,7 +178,7 @@ public class TextProccesor {
         return invIndex;
     }
     
-    public AVL<AVL<String>> buildInvertedIndexAVL(LinkedIndex<List<String>> invIndex) {
+    public AVL<AVL<String>> buildInvertedIndexAVL() {
         
         AVL<AVL<String>> avl = new AVL<>();
 
@@ -192,13 +194,10 @@ public class TextProccesor {
                 String word = listOfDocs.retrieve().retrieve();
 
                 if (avl.findKey(word)) {
-                    if(avl.retrieve().findKey(docID)){
-                       avl.retrieve().incrementNode();
-                   // issue with result being more than the expected value by 1 solved
-                }
-                else{
-                    avl.retrieve().insert(docID, null);
-                }
+                    if (avl.retrieve().findKey(docId))
+                        avl.retrieve().incrementNode();
+                    else 
+                        avl.retrieve().insert(docId, null);
                 } 
                 else {
                     AVL<String> idAVL = new AVL<>();
@@ -237,8 +236,10 @@ public class TextProccesor {
                 String word = listOfDocs.retrieve().retrieve();
 
                 if (avl.findKey(word)) {
-                    avl.retrieve().insert(docId, null);
-                    avl.incrementNode();
+                    if (avl.retrieve().findKey(docId)) // Same word in same document
+                        avl.retrieve().incrementNode(); // then increment
+                    else 
+                        avl.retrieve().insert(docId, null); // otherwise insert new doc id
                 } 
                 else {
                     AVL<String> idAVL = new AVL<>();
