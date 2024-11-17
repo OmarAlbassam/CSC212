@@ -3,11 +3,14 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 public class Test {
+
+    static boolean isAVL = true; // true for AVL, false for List. Use of Inverted Index
     static SearchEngine s = new SearchEngine();
 
     @SuppressWarnings("unused")
@@ -69,6 +72,22 @@ public class Test {
             System.out.println("Retrieval finished at " + durationInMillis + " ms.");
         });
         frame.add(rankedButton);
+
+        JLabel selectedDS = new JLabel("Selected: AVL");
+        selectedDS.setBounds(490, 20, 100, 30);
+        frame.add(selectedDS);
+
+        JButton switch_data_structure = new JButton("<html>Switch List<br>inverted index</html>");
+        switch_data_structure.setBounds(480, 40, 100, 80);
+        switch_data_structure.setFont(new Font("Arial", Font.BOLD, 8));
+        switch_data_structure.addActionListener(e -> {
+            String[] s = switchInvertedIndex();
+            switch_data_structure.setText(s[0]);
+            selectedDS.setText("Selected: " + s[1]);
+        });
+
+        frame.add(switch_data_structure);
+        
     
         frame.setVisible(true);
     }
@@ -84,5 +103,23 @@ public class Test {
         AVL<String> result = s.querySearch(in);
         LinkedList<String> list = (LinkedList<String>)result.makeList();
         return list.result();
+    }
+
+    public static String[] switchInvertedIndex() {
+        if (isAVL) {
+            isAVL = false;
+            // Implement some code to change the data structure in SearchEngine from AVL to List
+
+            String[] arr = {"<html>Switch AVL<br>inverted index</html>", "List"};
+            return arr;
+        } else if (!isAVL) {
+            isAVL = true;
+            // Implement some code to change the data structure in SearchEngine from List to AVL
+
+            String[] arr = {"<html>Switch List<br>inverted index</html>", "AVL"};
+            return arr;
+        }
+
+        return null;
     }
 }
