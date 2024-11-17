@@ -22,9 +22,13 @@ public class Test {
         frame.setResizable(false);
         frame.setLayout(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Makes the program terminate after the user clicks x
-    
+
+        JLabel searchLabel = new JLabel("Search");
+        searchLabel.setBounds(52, 0, 500, 30);
+        frame.add(searchLabel);
+
         JTextField inputField = new JTextField();
-        inputField.setBounds(150, 20, 300, 30);
+        inputField.setBounds(50, 20, 500, 30);
         frame.add(inputField);
     
         JScrollPane scrollPane = new JScrollPane();
@@ -38,7 +42,7 @@ public class Test {
         scrollPane.setViewportView(outputField); 
     
         JButton booleanButton = new JButton("Boolean Retrieval");
-        booleanButton.setBounds(120, 60, 150, 50);
+        booleanButton.setBounds(50, 60, 150, 50);
         booleanButton.addActionListener(e -> {
 
             long startTime = System.nanoTime();
@@ -57,7 +61,7 @@ public class Test {
         frame.add(booleanButton);
     
         JButton rankedButton = new JButton("Ranked Retrieval");
-        rankedButton.setBounds(320, 60, 150, 50);
+        rankedButton.setBounds(200, 60, 150, 50);
         rankedButton.addActionListener(e -> {
 
             long startTime = System.nanoTime();
@@ -75,16 +79,18 @@ public class Test {
         });
         frame.add(rankedButton);
 
-        JLabel selectedDS = new JLabel("Selected Data Structure");
-        selectedDS.setBounds(490, 20, 100, 30);
+        JLabel selectedDS = new JLabel("Selected Data Structure:");
+        selectedDS.setBounds(365, 55, 250, 30);
         frame.add(selectedDS);
 
         String[] ds = {"Inverted Index with AVL", "Inverted Index with LinkedList", "Index with LinkedList"};
         JComboBox<String> DSComboBox = new JComboBox<>(ds);
+        DSComboBox.setBounds(350, 80, 200, 30);
         DSComboBox.addActionListener(e -> {
-            String selectedItem = (String) DSComboBox.getSelectedItem();
-            System.out.println("Selected: " + selectedItem);
+            data_structure = (String) DSComboBox.getSelectedItem();
+            System.out.println(data_structure);
         });
+        frame.add(DSComboBox);
     
         frame.setVisible(true);
     }
