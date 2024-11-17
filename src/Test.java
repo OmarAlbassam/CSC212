@@ -7,14 +7,16 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-
+import javax.swing.JComboBox;
 public class Test {
 
-    static boolean isAVL = true; // true for AVL, false for List. Use of Inverted Index
+    static String data_structure = "Inverted Index with AVL"; // true for AVL, false for List. Use of Inverted Index
     static SearchEngine s = new SearchEngine();
 
     @SuppressWarnings("unused")
     public static void main(String[] args) {
+
+
         JFrame frame = new JFrame();
         frame.setSize(600, 400);
         frame.setResizable(false);
@@ -73,54 +75,31 @@ public class Test {
         });
         frame.add(rankedButton);
 
-        JLabel selectedDS = new JLabel("Selected: AVL");
+        JLabel selectedDS = new JLabel("Selected Data Structure");
         selectedDS.setBounds(490, 20, 100, 30);
         frame.add(selectedDS);
 
-        JButton switch_data_structure = new JButton("<html>Switch List<br>inverted index</html>");
-        switch_data_structure.setBounds(480, 40, 100, 80);
-        switch_data_structure.setFont(new Font("Arial", Font.BOLD, 8));
-        switch_data_structure.addActionListener(e -> {
-            String[] s = switchInvertedIndex();
-            switch_data_structure.setText(s[0]);
-            selectedDS.setText("Selected: " + s[1]);
+        String[] ds = {"Inverted Index with AVL", "Inverted Index with LinkedList", "Index with LinkedList"};
+        JComboBox<String> DSComboBox = new JComboBox<>(ds);
+        DSComboBox.addActionListener(e -> {
+            String selectedItem = (String) DSComboBox.getSelectedItem();
+            System.out.println("Selected: " + selectedItem);
         });
-
-        frame.add(switch_data_structure);
-        
     
         frame.setVisible(true);
     }
     
 
     public static String rankedRetrievalAction(String in) {
-        AVL<String> out = s.rankedSearch(in);
+        AVL<String> out = s.rankedSearchAVL(in);
         LinkedPQ pq = out.makePQ();
         return pq.result();
     }
 
     public static String booleanQueryAction(String in) {
-        AVL<String> result = s.querySearch(in);
+        AVL<String> result = s.querySearchAVL(in);
         LinkedList<String> list = (LinkedList<String>)result.makeList();
         return list.result();
     }
 
-    public static String[] switchInvertedIndex() {
-        if (isAVL) {
-            isAVL = false;
-            // Implement some code to change the data structure in SearchEngine from AVL to List
-            
-
-            String[] arr = {"<html>Switch AVL<br>inverted index</html>", "List"};
-            return arr;
-        } else if (!isAVL) {
-            isAVL = true;
-            // Implement some code to change the data structure in SearchEngine from List to AVL
-
-            String[] arr = {"<html>Switch List<br>inverted index</html>", "AVL"};
-            return arr;
-        }
-
-        return null;
-    }
 }

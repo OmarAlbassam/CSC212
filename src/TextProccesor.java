@@ -131,8 +131,9 @@ public class TextProccesor {
         return index;
 
     }
-    public LinkedIndex<List<String>> buildInvertedIndex() {
-        LinkedIndex<List<String>> invIndex = new LinkedIndex<>();
+    public LinkedIndex<ResultList<String>> buildInvertedIndex() {
+
+        LinkedIndex<ResultList<String>> invIndex = new LinkedIndex<>();
     
         listOfDocs.findFirst();
         while (!listOfDocs.last()) {
@@ -146,12 +147,14 @@ public class TextProccesor {
                 String word = listOfDocs.retrieve().retrieve();
     
                 if (invIndex.findKey(word)) {
-                    List<String> docIds = invIndex.retrieve();
+                    ResultList<String> docIds = invIndex.retrieve();
                     if (!docIds.contains(docId)) {
                         docIds.insert(docId);
+                    } else {
+                        docIds.incrementNode();
                     }
                 } else {
-                    LinkedList<String> newDocIds = new LinkedList<>();
+                    ResultList<String> newDocIds = new ResultList<>();
                     newDocIds.insert(docId);
                     invIndex.insert(newDocIds, word);
                 }
@@ -162,19 +165,60 @@ public class TextProccesor {
             // Handle the last word in the document
             String lastWord = listOfDocs.retrieve().retrieve();
             if (invIndex.findKey(lastWord)) {
-                List<String> docIds = invIndex.retrieve();
+                ResultList<String> docIds = invIndex.retrieve();
                 if (!docIds.contains(docId)) {
                     docIds.insert(docId);
+                } else {
+                    docIds.incrementNode();
                 }
             } else {
-                LinkedList<String> newDocIds = new LinkedList<>();
+                ResultList<String> newDocIds = new ResultList<>();
                 newDocIds.insert(docId);
                 invIndex.insert(newDocIds, lastWord);
             }
     
             listOfDocs.findNext();
         }
+
+        listOfDocs.retrieve().findFirst();
+            String docId = listOfDocs.retrieve().retrieve();
     
+            // Move to the first word in the document content
+            listOfDocs.retrieve().findNext();
+    
+            while (!listOfDocs.retrieve().last()) {
+                String word = listOfDocs.retrieve().retrieve();
+    
+                if (invIndex.findKey(word)) {
+                    ResultList<String> docIds = invIndex.retrieve();
+                    if (!docIds.contains(docId)) {
+                        docIds.insert(docId);
+                    } else {
+                        docIds.incrementNode();
+                    }
+                } else {
+                    ResultList<String> newDocIds = new ResultList<>();
+                    newDocIds.insert(docId);
+                    invIndex.insert(newDocIds, word);
+                }
+    
+                listOfDocs.retrieve().findNext();
+            }
+    
+            // Handle the last word in the document
+            String lastWord = listOfDocs.retrieve().retrieve();
+            if (invIndex.findKey(lastWord)) {
+                ResultList<String> docIds = invIndex.retrieve();
+                if (!docIds.contains(docId)) {
+                    docIds.insert(docId);
+                } else {
+                    docIds.incrementNode();
+                }
+            } else {
+                ResultList<String> newDocIds = new ResultList<>();
+                newDocIds.insert(docId);
+                invIndex.insert(newDocIds, lastWord);
+            }
         return invIndex;
     }
     

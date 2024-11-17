@@ -2,7 +2,7 @@
 public class SearchEngine {
 
     private AVL<AVL<String>> resultSetAVL;
-    private LinkedIndex<List<String>> resultSetList;
+    private LinkedIndex<ResultList<String>> resultSetList;
     private TextProccesor tp;
 
     SearchEngine() {
@@ -44,7 +44,7 @@ public class SearchEngine {
                 } else if (token.equalsIgnoreCase("OR")) {
                     resultStack.push(AVL.union(left, right));
                 }
-            } else {
+            } else { // It's a word
                 // Retrieve the AVL<String> for the term from the term index
                 AVL<String> termAVL = null;
                 if (resultSetAVL.findKey(token)) 
@@ -62,12 +62,54 @@ public class SearchEngine {
         return resultStack.empty() ? new AVL<>() : resultStack.pop();
     }
 
-    public LinkedList<String> rankedSearchList(String prompt){
+    public List<String> rankedSearchList(String prompt){
         
-    }
+        String[] promptWords = prompt.toLowerCase().split(" ");
+        ResultList<String> results = new ResultList<>();
 
-    public LinkedList<String> querySearchList(String prompt) {
+        for (String word : promptWords) {
+            if (!resultSetList.findKey(word)) continue;
 
+            results.insertListWithFrequency(resultSetList.retrieve());
+        }
+
+        return results;
+    }   
+
+    public List<String> querySearchList(String prompt) {
+
+        // sport omar AND car AND house left AND OR
+        String[] postfixExpression = postfix(prompt.toLowerCase());
+        LinkedStack<ResultList<String>> resultStack = new LinkedStack<>();
+
+        for (String token : postfixExpression) {
+            if (isOperator(token)) {
+                // Pop two AVLs from the stack for the operation
+                ResultList<String> right = resultStack.pop();
+                ResultList<String> left = resultStack.pop();
+
+                // Perform intersection or union based on the operator
+                if (token.equalsIgnoreCase("AND")) {
+                    resultStack.push(left.intersect(right));
+                } else if (token.equalsIgnoreCase("OR")) {
+                    resultStack.push(left.union(right));
+                }
+            } else { // It's a word
+                // Retrieve the AVL<String> for the term from the term index
+                ResultList<String> termAVL = null;
+                if (resultSetList.findKey(token)) 
+                    termAVL = resultSetList.retrieve(); 
+                
+                if (termAVL != null) {
+                    resultStack.push(termAVL);
+                } else {
+                    // Handle case where the term is not in the index
+                    resultStack.push(new ResultList<>()); // Push an empty AVL if term not found
+                }
+            }
+        }
+
+        return resultStack.empty() ? new ResultList<>() : resultStack.pop();
     }
     // helpers*
     private String[] postfix(String prompt) {
@@ -126,8 +168,4 @@ public class SearchEngine {
     private boolean isOperator(String operator) {
         return operator.equalsIgnoreCase("and") || operator.equalsIgnoreCase("or");
     }
-
-    
-
-
 }
