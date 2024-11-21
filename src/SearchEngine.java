@@ -1,32 +1,34 @@
 
 public class SearchEngine {
 
-	private AVL<AVL<String>> resultSetAVL;
-	private LinkedIndex<ResultList<String>> resultSetList;
+	private AVL<AVL<String>> invertedIndexAVL;
+	private LinkedIndex<ResultList<String>> invertedIndexList;
+	private LinkedIndex<ResultList<String>> indexList;
 	private TextProccesor tp;
 
 	SearchEngine() {
 		tp = new TextProccesor();
 		tp.fetchData(tp.fetchStopWords());
-		resultSetAVL = tp.buildInvertedIndexAVL();
-		resultSetList = tp.buildInvertedIndex();
+		indexList = tp.buildIndex();
+		invertedIndexList = tp.buildInvertedIndex();
+		invertedIndexAVL = tp.buildInvertedIndexAVL();
 	}
 
-	public AVL<String> rankedSearchAVL(String prompt) {
+	public AVL<String> rankedSearchInvertedAVL(String prompt) {
 
 		String[] promptWords = prompt.toLowerCase().split(" ");
 		AVL<String> results = new AVL<>();
 
 		for (String word : promptWords) {
-			if (!resultSetAVL.findKey(word))
+			if (!invertedIndexAVL.findKey(word))
 				continue;
 
-			results.insertTreeWithFrequency(resultSetAVL.retrieve());
+			results.insertTreeWithFrequency(invertedIndexAVL.retrieve());
 		}
 		return results;
 	}
 
-	public AVL<String> querySearchAVL(String prompt) {
+	public AVL<String> querySearchInvertedAVL(String prompt) {
 
 		// sport omar AND car AND house left AND OR
 		String[] postfixExpression = postfix(prompt.toLowerCase());
@@ -47,8 +49,8 @@ public class SearchEngine {
 			} else { // It's a word
 				// Retrieve the AVL<String> for the term from the term index
 				AVL<String> termAVL = null;
-				if (resultSetAVL.findKey(token))
-					termAVL = resultSetAVL.retrieve();
+				if (invertedIndexAVL.findKey(token))
+					termAVL = invertedIndexAVL.retrieve();
 
 				if (termAVL != null) {
 					resultStack.push(termAVL);
@@ -62,22 +64,22 @@ public class SearchEngine {
 		return resultStack.empty() ? new AVL<>() : resultStack.pop();
 	}
 
-	public List<String> rankedSearchList(String prompt) {
+	public List<String> rankedSearchInvertedList(String prompt) {
 
 		String[] promptWords = prompt.toLowerCase().split(" ");
 		ResultList<String> results = new ResultList<>();
 
 		for (String word : promptWords) {
-			if (!resultSetList.findKey(word))
+			if (!invertedIndexList.findKey(word))
 				continue;
 
-			results.insertListWithFrequency(resultSetList.retrieve());
+			results.insertListWithFrequency(invertedIndexList.retrieve());
 		}
 
 		return results;
 	}
 
-	public List<String> querySearchList(String prompt) {
+	public List<String> querySearchInvertedList(String prompt) {
 
 		// sport omar AND car AND house left AND OR
 		String[] postfixExpression = postfix(prompt.toLowerCase());
@@ -98,8 +100,8 @@ public class SearchEngine {
 			} else { // It's a word
 				// Retrieve the AVL<String> for the term from the term index
 				ResultList<String> termAVL = null;
-				if (resultSetList.findKey(token))
-					termAVL = resultSetList.retrieve();
+				if (invertedIndexList.findKey(token))
+					termAVL = invertedIndexList.retrieve();
 
 				if (termAVL != null) {
 					resultStack.push(termAVL);
@@ -111,6 +113,65 @@ public class SearchEngine {
 		}
 
 		return resultStack.empty() ? new ResultList<>() : resultStack.pop();
+	}
+
+	public List<String> querySearchList(String prompt) {
+		return null;
+	}
+
+	public List<String> rankedSearchList(String prompt) {
+		String[] promptWords = prompt.toLowerCase().split(" ");
+		ResultList<String> results = new ResultList<>();
+
+		indexList.findFirst();
+		while (!indexList.last()) {
+			String docId = indexList.getKey();
+			indexList.retrieve().findFirst();
+			while (!indexList.retrieve().last()) {
+				for (String word : promptWords) {
+					if (word.equalsIgnoreCase(indexList.retrieve().retrieve())) { // do the frequency score addition
+						if (results.contains(docId)) {
+							results.incrementFrequencyBy(indexList.retrieve().getFrequency());
+						} else
+							results.insert(docId, indexList.retrieve().getFrequency());
+					}
+				}
+				indexList.retrieve().findNext();
+			}
+			for (String word : promptWords) {
+				if (word.equalsIgnoreCase(indexList.retrieve().retrieve())) { // do the frequency score addition
+					if (results.contains(docId)) {
+						results.incrementFrequencyBy(indexList.retrieve().getFrequency());
+					} else
+						results.insert(docId, indexList.retrieve().getFrequency());
+				}
+			}
+			indexList.findNext();
+		}
+
+		String docId = indexList.getKey();
+		indexList.retrieve().findFirst();
+		while (!indexList.retrieve().last()) {
+			for (String word : promptWords) {
+				if (word.equalsIgnoreCase(indexList.retrieve().retrieve())) { // do the frequency score addition
+					if (results.contains(docId)) {
+						results.incrementFrequencyBy(indexList.retrieve().getFrequency());
+					} else
+						results.insert(docId, indexList.retrieve().getFrequency());
+				}
+			}
+			indexList.retrieve().findNext();
+		}
+		for (String word : promptWords) {
+			if (word.equalsIgnoreCase(indexList.retrieve().retrieve())) { // do the frequency score addition
+				if (results.contains(docId)) {
+					results.incrementFrequencyBy(indexList.retrieve().getFrequency());
+				} else
+					results.insert(docId, indexList.retrieve().getFrequency());
+			}
+		}
+
+		return results;
 	}
 
 	// helpers*
@@ -159,12 +220,12 @@ public class SearchEngine {
 		operator = operator.toLowerCase();
 
 		switch (operator) {
-		case "and":
-			return 2;
-		case "or":
-			return 1;
-		default:
-			return 0;
+			case "and":
+				return 2;
+			case "or":
+				return 1;
+			default:
+				return 0;
 		}
 	}
 
@@ -175,6 +236,7 @@ public class SearchEngine {
 	int getToken() {
 		return tp.tokensCount;
 	}
+
 	int getVocab() {
 		return tp.vocabCount;
 	}

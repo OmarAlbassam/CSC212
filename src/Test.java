@@ -8,9 +8,10 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+
 public class Test {
 
-    static String data_structure = "Inverted Index with AVL"; // true for AVL, false for List. Use of Inverted Index
+    static String data_structure = "Inverted Index with AVL"; // By default, AVL Inverted Index is selected
     static SearchEngine s = new SearchEngine();
 
     @SuppressWarnings("unused")
@@ -24,7 +25,7 @@ public class Test {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Makes the program terminate after the user clicks x
         
         JLabel tokensLabel=new JLabel("Tokens: "+s.getToken());
-        tokensLabel.setBounds(20, 340, 250, 30); // Moved to the bottom-left of the frame
+        tokensLabel.setBounds(50, 340, 250, 30); // Moved to the bottom-left of the frame
         tokensLabel.setFont(new Font("Arial",Font.BOLD,15));
         frame.add(tokensLabel);
         
@@ -110,6 +111,9 @@ public class Test {
         frame.add(DSComboBox);
     
         frame.setVisible(true);
+
+
+
     	
     	//***** InvertedIndex without stopWords *****
 //    	TextProccesor tp = new TextProccesor();
@@ -129,13 +133,13 @@ public class Test {
     
 
     public static String rankedRetrievalAction(String in) {
-        AVL<String> out = s.rankedSearchAVL(in);
+        AVL<String> out = s.rankedSearchInvertedAVL(in);
         LinkedPQ pq = out.makePQ();
         return pq.result();
     }
 
     public static String booleanQueryAction(String in) {
-        AVL<String> result = s.querySearchAVL(in);
+        AVL<String> result = s.querySearchInvertedAVL(in);
         LinkedList<String> list = (LinkedList<String>)result.makeList();
         return list.result();
     }

@@ -56,6 +56,10 @@ public class ResultList<T> implements List<T> {
         }
     }
 
+    public void incrementFrequencyBy(int i) {
+        current.frequency += i;
+    }
+
     
     public void remove() {
         if (head == current) {
@@ -104,18 +108,6 @@ public class ResultList<T> implements List<T> {
         }
         System.out.println(current.data + ":" + current.frequency);
     }
-
-    // public boolean contains(String val) {
-    //     if (head == null)
-    //         return false;
-    //     ResultNode<T> tmp = head;
-    //     while (tmp != null) {
-    //         if (tmp.data.equals(val))
-    //             return true;
-    //         tmp = tmp.next;
-    //     }
-    //     return false;
-    // }
 
     public boolean contains(T val) {
         if (head == null)
