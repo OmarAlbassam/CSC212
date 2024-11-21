@@ -18,11 +18,26 @@ public class Test {
 
 
         JFrame frame = new JFrame();
-        frame.setSize(600, 400);
+        frame.setSize(600, 410);
         frame.setResizable(false);
         frame.setLayout(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Makes the program terminate after the user clicks x
-
+        
+        JLabel tokensLabel=new JLabel("Tokens: "+s.getToken());
+        tokensLabel.setBounds(20, 340, 250, 30); // Moved to the bottom-left of the frame
+        tokensLabel.setFont(new Font("Arial",Font.BOLD,15));
+        frame.add(tokensLabel);
+        
+        JLabel vocabLabel=new JLabel("Vocab: "+s.getVocab());
+        vocabLabel.setBounds(180, 340, 250, 30); // Moved to the bottom-right of the frame
+        vocabLabel.setFont(new Font("Arial",Font.BOLD,15));
+        frame.add(vocabLabel);
+        
+        JLabel time=new JLabel("Time: ");
+        time.setBounds(320, 340, 250, 30); // Moved to the bottom-left of the frame
+        time.setFont(new Font("Arial",Font.BOLD,15));
+        frame.add(time);
+        
         JLabel searchLabel = new JLabel("Search");
         searchLabel.setBounds(52, 0, 500, 30);
         frame.add(searchLabel);
@@ -56,7 +71,8 @@ public class Test {
             long finishTime = System.nanoTime();
             long durationInMillis = (finishTime - startTime) / 1_000_000;
 
-            System.out.println("Query finished at " + durationInMillis + " ms.");
+            //System.out.println("Query finished at " + durationInMillis + " ms.");
+            time.setText("Time: finished at " + durationInMillis + " ms.");
         });
         frame.add(booleanButton);
     
@@ -75,7 +91,8 @@ public class Test {
             long finishTime = System.nanoTime();
             long durationInMillis = (finishTime - startTime) / 1_000_000;
 
-            System.out.println("Retrieval finished at " + durationInMillis + " ms.");
+            time.setText("Time: finished at " + durationInMillis + " ms.");
+
         });
         frame.add(rankedButton);
 
@@ -93,6 +110,21 @@ public class Test {
         frame.add(DSComboBox);
     
         frame.setVisible(true);
+    	
+    	//***** InvertedIndex without stopWords *****
+//    	TextProccesor tp = new TextProccesor();
+//    	tp.fetchData(new LinkedList<String>()); 
+//    	LinkedIndex<ResultList<String>> l =tp.buildInvertedIndex();
+//    	l.findFirst();
+//    	int count=0;
+//    	while(!l.last()) {
+//    		count++;
+//    	l.findNext();	
+//    	}
+//    	count++;
+//    	System.out.println("Count: "+count);
+//    	System.out.println("VocabCount: "+tp.vocabCount);
+    	
     }
     
 
