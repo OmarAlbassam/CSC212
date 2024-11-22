@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+
+import javax.naming.spi.DirStateFactory.Result;
 
 public class SearchEngine {
 
@@ -87,7 +90,7 @@ public class SearchEngine {
 
 		for (String token : postfixExpression) {
 			if (isOperator(token)) {
-				// Pop two AVLs from the stack for the operation
+				// Pop two Lists from the stack for the operation
 				ResultList<String> right = resultStack.pop();
 				ResultList<String> left = resultStack.pop();
 
@@ -98,25 +101,21 @@ public class SearchEngine {
 					resultStack.push(left.union(right));
 				}
 			} else { // It's a word
-				// Retrieve the AVL<String> for the term from the term index
-				ResultList<String> termAVL = null;
+				// Retrieve the ResultList<String> for the term from the term index
+				ResultList<String> termList = null;
 				if (invertedIndexList.findKey(token))
-					termAVL = invertedIndexList.retrieve();
+					termList = invertedIndexList.retrieve();
 
-				if (termAVL != null) {
-					resultStack.push(termAVL);
+				if (termList != null) {
+					resultStack.push(termList);
 				} else {
 					// Handle case where the term is not in the index
-					resultStack.push(new ResultList<>()); // Push an empty AVL if term not found
+					resultStack.push(new ResultList<>()); // Push an empty ResultList if term not found
 				}
 			}
 		}
 
 		return resultStack.empty() ? new ResultList<>() : resultStack.pop();
-	}
-
-	public List<String> querySearchList(String prompt) {
-		return null;
 	}
 
 	public List<String> rankedSearchList(String prompt) {
@@ -172,6 +171,41 @@ public class SearchEngine {
 		}
 
 		return results;
+	}
+
+	public List<String> querySearchList(String prompt) {
+		String[] postfixExpression = postfix(prompt.toLowerCase());
+		LinkedStack<ResultList<String>> resultStack = new LinkedStack<>();
+
+		for (String token : postfixExpression) {
+			if (isOperator(token)) {
+				ResultList<String> right = resultStack.pop();
+				ResultList<String> left = resultStack.pop();
+
+				// Perform intersection or union based on the operator
+				if (token.equalsIgnoreCase("AND")) {
+					resultStack.push(left.intersect(right));
+				} else if (token.equalsIgnoreCase("OR")) {
+					resultStack.push(left.union(right));
+				}
+			} else { // it is a word
+				ResultList<String> docIds = new ResultList<>();
+				indexList.findFirst();
+				while (!indexList.last()) {
+					if (indexList.retrieve().contains(token)) {
+						docIds.insert(indexList.getKey());
+					}
+					indexList.findNext();
+				}
+				if (indexList.retrieve().contains(token)) { // last doc check!
+					docIds.insert(indexList.getKey());
+				}
+
+				resultStack.push(docIds);
+			}
+		}
+
+		return resultStack.empty() ? new ResultList<>() : resultStack.pop();
 	}
 
 	// helpers*

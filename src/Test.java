@@ -17,28 +17,28 @@ public class Test {
     @SuppressWarnings("unused")
     public static void main(String[] args) {
 
-
         JFrame frame = new JFrame();
         frame.setSize(600, 410);
+        frame.setTitle("Search Engine");
         frame.setResizable(false);
         frame.setLayout(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Makes the program terminate after the user clicks x
-        
-        JLabel tokensLabel=new JLabel("Tokens: "+s.getToken());
+
+        JLabel tokensLabel = new JLabel("Tokens: " + s.getToken());
         tokensLabel.setBounds(50, 340, 250, 30); // Moved to the bottom-left of the frame
-        tokensLabel.setFont(new Font("Arial",Font.BOLD,15));
+        tokensLabel.setFont(new Font("Arial", Font.BOLD, 15));
         frame.add(tokensLabel);
-        
-        JLabel vocabLabel=new JLabel("Vocab: "+s.getVocab());
+
+        JLabel vocabLabel = new JLabel("Vocab: " + s.getVocab());
         vocabLabel.setBounds(180, 340, 250, 30); // Moved to the bottom-right of the frame
-        vocabLabel.setFont(new Font("Arial",Font.BOLD,15));
+        vocabLabel.setFont(new Font("Arial", Font.BOLD, 15));
         frame.add(vocabLabel);
-        
-        JLabel time=new JLabel("Time: ");
+
+        JLabel time = new JLabel("Time: ");
         time.setBounds(320, 340, 250, 30); // Moved to the bottom-left of the frame
-        time.setFont(new Font("Arial",Font.BOLD,15));
+        time.setFont(new Font("Arial", Font.BOLD, 15));
         frame.add(time);
-        
+
         JLabel searchLabel = new JLabel("Search");
         searchLabel.setBounds(52, 0, 500, 30);
         frame.add(searchLabel);
@@ -46,17 +46,17 @@ public class Test {
         JTextField inputField = new JTextField();
         inputField.setBounds(50, 20, 500, 30);
         frame.add(inputField);
-    
+
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBounds(50, 140, 500, 200);
         frame.add(scrollPane);
-    
+
         JTextArea outputField = new JTextArea();
         outputField.setFont(new Font("Arial", Font.BOLD, 16));
         outputField.setEditable(false);
         outputField.setBackground(Color.white);
-        scrollPane.setViewportView(outputField); 
-    
+        scrollPane.setViewportView(outputField);
+
         JButton booleanButton = new JButton("Boolean Retrieval");
         booleanButton.setBounds(50, 60, 150, 50);
         booleanButton.addActionListener(e -> {
@@ -71,13 +71,13 @@ public class Test {
             outputField.setText(result);
 
             long finishTime = System.nanoTime();
-            long durationInMillis = (finishTime - startTime) / 1_000_000;
+            double durationInMillis = (double)(finishTime - startTime) / 1000000;
 
-            //System.out.println("Query finished at " + durationInMillis + " ms.");
+            // System.out.println("Query finished at " + durationInMillis + " ms.");
             time.setText("Time: finished at " + durationInMillis + " ms.");
         });
         frame.add(booleanButton);
-    
+
         JButton rankedButton = new JButton("Ranked Retrieval");
         rankedButton.setBounds(200, 60, 150, 50);
         rankedButton.addActionListener(e -> {
@@ -92,18 +92,18 @@ public class Test {
             outputField.setText(result);
 
             long finishTime = System.nanoTime();
-            long durationInMillis = (finishTime - startTime) / 1_000_000;
+            double durationInMillis = (double)(finishTime - startTime) / 1000000;
 
             time.setText("Time: finished at " + durationInMillis + " ms.");
 
         });
         frame.add(rankedButton);
 
-        JLabel selectedDS = new JLabel("Selected Data Structure:");
-        selectedDS.setBounds(365, 55, 250, 30);
+        JLabel selectedDS = new JLabel("Selected Index:");
+        selectedDS.setBounds(355, 55, 250, 30);
         frame.add(selectedDS);
 
-        String[] ds = {"Inverted Index with AVL", "Inverted Index with LinkedList", "Index with LinkedList"};
+        String[] ds = { "Inverted Index with AVL", "Inverted Index with LinkedList", "Index with LinkedList" };
         JComboBox<String> DSComboBox = new JComboBox<>(ds);
         DSComboBox.setBounds(350, 80, 200, 30);
         DSComboBox.addActionListener(e -> {
@@ -111,39 +111,65 @@ public class Test {
             System.out.println(data_structure);
         });
         frame.add(DSComboBox);
-    
+
         frame.setVisible(true);
 
 
 
-    	
-    	//***** InvertedIndex without stopWords *****
-//    	TextProccesor tp = new TextProccesor();
-//    	tp.fetchData(new LinkedList<String>()); 
-//    	LinkedIndex<ResultList<String>> l =tp.buildInvertedIndex();
-//    	l.findFirst();
-//    	int count=0;
-//    	while(!l.last()) {
-//    		count++;
-//    	l.findNext();	
-//    	}
-//    	count++;
-//    	System.out.println("Count: "+count);
-//    	System.out.println("VocabCount: "+tp.vocabCount);
-    	
+        // ***** InvertedIndex without stopWords *****
+        // TextProccesor tp = new TextProccesor();
+        // tp.fetchData(new LinkedList<String>());
+        // LinkedIndex<ResultList<String>> l =tp.buildInvertedIndex();
+        // l.findFirst();
+        // int count=0;
+        // while(!l.last()) {
+        // count++;
+        // l.findNext();
+        // }
+        // count++;
+        // System.out.println("Count: "+count);
+        // System.out.println("VocabCount: "+tp.vocabCount);
+
     }
-    
 
     public static String rankedRetrievalAction(String in) {
-        AVL<String> out = s.rankedSearchInvertedAVL(in);
-        LinkedPQ pq = out.makePQ();
-        return pq.result();
+        if (data_structure.equals("Inverted Index with AVL")) {
+            AVL<String> out = s.rankedSearchInvertedAVL(in);
+            LinkedPQ<String> pq = out.makePQ();
+            System.out.println("AVL index");
+            return pq.result();
+
+        } else if (data_structure.equals("Inverted Index with LinkedList")) {
+            ResultList<String> out = (ResultList<String>) s.rankedSearchInvertedList(in);
+            LinkedPQ<String> pq = out.makePQ();
+            System.out.println("inverted index");
+            return pq.result();
+            
+        } else {
+            ResultList<String> out = (ResultList<String>) s.rankedSearchList(in);
+            LinkedPQ<String> pq = out.makePQ();
+            System.out.println("Normal index");
+            return pq.result();
+        }
     }
 
     public static String booleanQueryAction(String in) {
-        AVL<String> result = s.querySearchInvertedAVL(in);
-        LinkedList<String> list = (LinkedList<String>)result.makeList();
-        return list.result();
+        if (data_structure.equals("Inverted Index with AVL")) {
+            AVL<String> out = s.querySearchInvertedAVL(in);
+            LinkedList<String> res = (LinkedList<String>) out.makeList();
+            return res.result();
+        } else if (data_structure.equals("Inverted Index with LinkedList")) {
+            ResultList<String> out = (ResultList<String>) s.querySearchInvertedList(in);
+            String res = out.result();
+            System.out.println("inverted index");
+
+            return res;
+        } else {
+            ResultList<String> out = (ResultList<String>) s.querySearchList(in);
+            String res = out.result();
+            System.out.println("Normal index");
+            return res;
+        }
     }
 
 }

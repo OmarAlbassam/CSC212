@@ -269,13 +269,13 @@ public class AVL<T> {
         makeListHelper(node.right, list);
     }
 
-    public LinkedPQ makePQ() {
-        LinkedPQ queue = new LinkedPQ();
+    public LinkedPQ<String> makePQ() {
+        LinkedPQ<String> queue = new LinkedPQ<>();
         makePQHelper(root, queue);
         return queue;
     }
 
-    private void makePQHelper(AVLNode<T> node, LinkedPQ queue) {
+    private void makePQHelper(AVLNode<T> node, LinkedPQ<String> queue) {
         if (node == null) return;
 
         makePQHelper(node.left, queue);

@@ -1,29 +1,33 @@
 
-
 public class ResultList<T> implements List<T> {
-    
+
     private ResultNode<T> head;
     private ResultNode<T> current;
-    
+
     ResultList() {
         head = current = null;
+    }
+
+    ResultList(ResultList<T> list) {
+        ResultNode<T> listNode = list.head;
+        while (listNode != null) {
+            this.insert(listNode.data, listNode.frequency);
+            listNode = listNode.next;
+        }
     }
 
     public void findFirst() {
         current = head;
     }
 
-    
     public void findNext() {
         current = current.next;
     }
 
-    
     public T retrieve() {
         return current.data;
     }
 
-    
     public void update(T e) {
         current.data = e;
     }
@@ -32,7 +36,6 @@ public class ResultList<T> implements List<T> {
         return current.frequency;
     }
 
-    
     public void insert(T e) {
         ResultNode<T> temp;
         if (empty()) {
@@ -44,6 +47,7 @@ public class ResultList<T> implements List<T> {
             current.next = temp;
         }
     }
+
     public void insert(T e, int freq) {
         ResultNode<T> temp;
         if (empty()) {
@@ -60,40 +64,35 @@ public class ResultList<T> implements List<T> {
         current.frequency += i;
     }
 
-    
     public void remove() {
         if (head == current) {
             head = head.next;
         } else {
             ResultNode<T> tmp = head;
-            while (tmp.next != current) 
+            while (tmp.next != current)
                 tmp = tmp.next;
             tmp.next = current.next;
         }
-        
+
         if (current.next == null)
             current = head;
         else
             current = current.next;
-        
+
     }
 
-    
     public boolean full() {
         return false;
     }
 
-    
     public boolean empty() {
         return head == null;
     }
 
-    
     public boolean last() {
         return current.next == null;
     }
 
-    
     public void clear() {
         head = current = null;
     }
@@ -128,6 +127,10 @@ public class ResultList<T> implements List<T> {
     }
 
     public ResultList<T> intersect(ResultList<T> l1) {
+
+        if (l1.head == null || this.head == null)
+            return new ResultList<>();
+
         ResultList<T> tmpList = new ResultList<>();
         ResultNode<T> tmp = head;
 
@@ -140,6 +143,12 @@ public class ResultList<T> implements List<T> {
     }
 
     public ResultList<T> union(ResultList<T> l1) {
+
+        if (l1.head == null)
+            return new ResultList<>(this);
+        if (this.head == null)
+            return new ResultList<>(l1);
+
         ResultList<T> tmpList = new ResultList<T>();
         ResultNode<T> tmp = head;
 
@@ -149,19 +158,14 @@ public class ResultList<T> implements List<T> {
         }
         l1.findFirst();
         while (!l1.last()) {
-            if (tmpList.contains(l1.retrieve())) {
-                // Do nothing
-            } else {
+            if (!tmpList.contains(l1.retrieve()))
                 tmpList.insert(l1.retrieve());
-            }
+
             l1.findNext();
         }
-        if (tmpList.contains(l1.retrieve())) {
-            // Do nothing
-        } else {
+        if (!tmpList.contains(l1.retrieve()))
             tmpList.insert(l1.retrieve());
 
-        }
         return tmpList;
     }
 
@@ -179,6 +183,35 @@ public class ResultList<T> implements List<T> {
 
             tmp = tmp.next;
         }
+    }
+
+    public String result() {
+
+        if (head == null)
+            return "No Results";
+
+        String result = "{";
+        ResultNode<T> tmp = head;
+        while (tmp.next != null) {
+            result += tmp.data + ", ";
+            tmp = tmp.next;
+        }
+        result += tmp.data + "}";
+
+        return result;
+    }
+
+    public LinkedPQ<T> makePQ() {
+        if (head == null)
+            return null;
+
+        LinkedPQ<T> queue = new LinkedPQ<>();
+        ResultNode<T> tmp = head;
+        while (tmp != null) {
+            queue.enqueue(tmp.data, tmp.frequency);
+            tmp = tmp.next;
+        }
+        return queue;
     }
 
 }
