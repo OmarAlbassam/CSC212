@@ -7,6 +7,7 @@ import java.io.IOException;
 public class TextProccesor {
     int vocabCount;
     int tokensCount;
+    int docCount;
     private static final String DOCS_PATH = "data/dataset.csv", STOP_WORDS_PATH = "data/stop.txt";
     private static final String ALPHANUMERIC_REGEX = "'s\\b|[^a-zA-Z0-9\\s-]";
     private File docsFile, stopFile;
@@ -65,6 +66,7 @@ public class TextProccesor {
                 }
 
                 listOfDocs.insert(ls);
+                docCount++;
                 line = input.readLine();
 
             }
