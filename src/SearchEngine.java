@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-
-import javax.naming.spi.DirStateFactory.Result;
 
 public class SearchEngine {
 
