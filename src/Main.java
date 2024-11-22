@@ -71,8 +71,8 @@ public class Main {
             String result = booleanQueryAction(input);
             outputField.setText(result);
 
-            // System.out.println("Query finished at " + durationInMillis + " ms.");
-            time.setText("Time: finished at " + SearchEngine.queryTime + " ms.");
+            String queryTime = String.format("%.4f", SearchEngine.queryTime); // This is to format the time to 4 decimal places
+            time.setText("Time: finished at " + queryTime + " ms.");
         });
         frame.add(booleanButton);
 
@@ -88,7 +88,8 @@ public class Main {
             }
             String result = rankedRetrievalAction(input);
             outputField.setText(result);
-            time.setText("Time: finished at " + SearchEngine.queryTime + " ms.");
+            String queryTime = String.format("%.4f", SearchEngine.queryTime); // This is to format the time to 4 decimal places
+            time.setText("Time: finished at " + queryTime + " ms.");
 
         });
         frame.add(rankedButton);
