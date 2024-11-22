@@ -203,7 +203,7 @@ public class ResultList<T> implements List<T> {
 
     public LinkedPQ<T> makePQ() {
         if (head == null)
-            return null;
+            return new LinkedPQ<>();
 
         LinkedPQ<T> queue = new LinkedPQ<>();
         ResultNode<T> tmp = head;
