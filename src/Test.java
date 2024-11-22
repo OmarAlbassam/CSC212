@@ -64,6 +64,7 @@ public class Test {
             long startTime = System.nanoTime();
 
             String input = inputField.getText();
+            input = input.strip();
             if (input.equals("")) // This is to handle empty search box retreival requests
                 return;
             String result = booleanQueryAction(input);
@@ -84,6 +85,7 @@ public class Test {
             long startTime = System.nanoTime();
 
             String input = inputField.getText();
+            input = input.strip();
             if (input.equals("")) // This is to handle empty search box retreival requests
                 return;
             String result = rankedRetrievalAction(input);
