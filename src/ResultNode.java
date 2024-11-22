@@ -1,8 +1,8 @@
 
-public class ResultNode {
+public class ResultNode<T> {
 
-    public String data;
-    public ResultNode next;
+    public T data;
+    public ResultNode<T> next;
     public int frequency;
 
     public ResultNode() {
@@ -11,12 +11,13 @@ public class ResultNode {
         frequency = 1;
     }
 
-    public ResultNode(String value) {
+    public ResultNode(T value) {
         data = value;
         next = null;
+        frequency = 1;
     }
 
-    public ResultNode(String value, int freq) {
+    public ResultNode(T value, int freq) {
         this.data = value;
         this.frequency = freq;
         next = null;

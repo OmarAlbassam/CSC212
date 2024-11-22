@@ -1,8 +1,8 @@
-public class PQElement {
+public class PQElement<T> {
     public int priority;
-    public String data;
+    public T data;
 
-    PQElement(String d, int p) {
+    PQElement(T d, int p) {
         priority = p;;
         data = d;
     }

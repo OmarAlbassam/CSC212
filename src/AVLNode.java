@@ -2,7 +2,7 @@
 public class AVLNode<T> {
 	public String key;
 	public int frequency;
-	public T data;
+	public T data; // AVL<AVL<Integer>>
 	public int height;	// Must be in range (+1, 0, -1)
 	public AVLNode<T> left, right;
 	

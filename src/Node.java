@@ -2,6 +2,7 @@
 public class Node<T> {
 
     public T data;
+    public int frequency;
     public Node<T> next;
 
     public Node() {

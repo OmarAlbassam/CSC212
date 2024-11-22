@@ -1,13 +1,13 @@
-public class PQNode {
-    public String data;
+public class PQNode<T> {
+    public T data;
     public int priority;
-    public PQNode next;
+    public PQNode<T> next;
 
     public PQNode() {
         next = null;
     }
 
-    public PQNode(String e, int p) {
+    public PQNode(T e, int p) {
         data = e;
         priority = p;
     }
