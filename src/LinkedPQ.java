@@ -57,15 +57,15 @@ public class LinkedPQ<T> {
         if (head == null)
             return "No Results";
 
-        StringBuilder result = new StringBuilder("Document ID\t\tScore\n");
+        String result = new String("Document ID\t\tScore\n");
         PQNode<T> tmp = head;
 
         while (tmp != null) {
-            result.append(tmp.data).append("\t\t").append(tmp.priority).append("\n");
+            result += tmp.data + "\t\t" + tmp.priority + "\n";
             tmp = tmp.next;
         }
 
-        return result.toString();
+        return result;
     }
 }
 

@@ -4,12 +4,13 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 
-public class Test {
+public class Main {
 
     static String data_structure = "Inverted Index with AVL"; // By default, AVL Inverted Index is selected
     static SearchEngine s = new SearchEngine();
@@ -61,20 +62,17 @@ public class Test {
         booleanButton.setBounds(50, 60, 150, 50);
         booleanButton.addActionListener(e -> {
 
-            long startTime = System.nanoTime();
-
             String input = inputField.getText();
             input = input.strip();
-            if (input.equals("")) // This is to handle empty search box retreival requests
+            if (input.equals("")) { // This is to handle empty search box retreival requests
+                JOptionPane.showMessageDialog(frame, "Search box is empty", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
+            }
             String result = booleanQueryAction(input);
             outputField.setText(result);
 
-            long finishTime = System.nanoTime();
-            double durationInMillis = (double)(finishTime - startTime) / 1000000;
-
             // System.out.println("Query finished at " + durationInMillis + " ms.");
-            time.setText("Time: finished at " + durationInMillis + " ms.");
+            time.setText("Time: finished at " + SearchEngine.queryTime + " ms.");
         });
         frame.add(booleanButton);
 
@@ -82,19 +80,15 @@ public class Test {
         rankedButton.setBounds(200, 60, 150, 50);
         rankedButton.addActionListener(e -> {
 
-            long startTime = System.nanoTime();
-
             String input = inputField.getText();
             input = input.strip();
-            if (input.equals("")) // This is to handle empty search box retreival requests
+            if (input.equals("")) { // This is to handle empty search box retreival requests
+                JOptionPane.showMessageDialog(frame, "Search box is empty", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
+            }
             String result = rankedRetrievalAction(input);
             outputField.setText(result);
-
-            long finishTime = System.nanoTime();
-            double durationInMillis = (double)(finishTime - startTime) / 1000000;
-
-            time.setText("Time: finished at " + durationInMillis + " ms.");
+            time.setText("Time: finished at " + SearchEngine.queryTime + " ms.");
 
         });
         frame.add(rankedButton);
@@ -114,8 +108,6 @@ public class Test {
 
         frame.setVisible(true);
 
-
-
         // ***** InvertedIndex without stopWords *****
         // TextProccesor tp = new TextProccesor();
         // tp.fetchData(new LinkedList<String>());
@@ -134,40 +126,36 @@ public class Test {
 
     public static String rankedRetrievalAction(String in) {
         if (data_structure.equals("Inverted Index with AVL")) {
+            s.rankedSearchInvertedAVL(in);
             AVL<String> out = s.rankedSearchInvertedAVL(in);
             LinkedPQ<String> pq = out.makePQ();
-            System.out.println("AVL index");
             return pq.result();
 
         } else if (data_structure.equals("Inverted Index with LinkedList")) {
             ResultList<String> out = (ResultList<String>) s.rankedSearchInvertedList(in);
             LinkedPQ<String> pq = out.makePQ();
-            System.out.println("inverted index");
             return pq.result();
-            
+
         } else {
             ResultList<String> out = (ResultList<String>) s.rankedSearchList(in);
             LinkedPQ<String> pq = out.makePQ();
-            System.out.println("Normal index");
             return pq.result();
         }
     }
 
     public static String booleanQueryAction(String in) {
         if (data_structure.equals("Inverted Index with AVL")) {
+            s.querySearchInvertedAVL(in);
             AVL<String> out = s.querySearchInvertedAVL(in);
             LinkedList<String> res = (LinkedList<String>) out.makeList();
             return res.result();
         } else if (data_structure.equals("Inverted Index with LinkedList")) {
             ResultList<String> out = (ResultList<String>) s.querySearchInvertedList(in);
             String res = out.result();
-            System.out.println("inverted index");
-
             return res;
         } else {
             ResultList<String> out = (ResultList<String>) s.querySearchList(in);
             String res = out.result();
-            System.out.println("Normal index");
             return res;
         }
     }

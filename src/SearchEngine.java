@@ -5,6 +5,7 @@ public class SearchEngine {
 	private LinkedIndex<ResultList<String>> invertedIndexList;
 	private LinkedIndex<ResultList<String>> indexList;
 	private TextProccesor tp;
+	static double queryTime = 0;
 
 	SearchEngine() {
 		tp = new TextProccesor();
@@ -12,24 +13,39 @@ public class SearchEngine {
 		indexList = tp.buildIndex();
 		invertedIndexList = tp.buildInvertedIndex();
 		invertedIndexAVL = tp.buildInvertedIndexAVL();
+		dummyWarmUp();
+	}
+	
+	// this is a dummy warm up method to avoid the first search to be slow,
+	// just makes sure that the queryTime attribute is consistent.
+	private void dummyWarmUp() {
+		rankedSearchInvertedAVL("sports omar life marathon");
+		rankedSearchInvertedList("sports omar life marathon");
+		rankedSearchList("sports omar life marathon");
+		querySearchInvertedAVL("sport or omar or ai and life");
+		querySearchInvertedList("sport or omar or ai and life");
+		querySearchList("sport or omar or ai and life");
 	}
 
 	public AVL<String> rankedSearchInvertedAVL(String prompt) {
 
+		long startTime = System.nanoTime();
 		String[] promptWords = prompt.toLowerCase().split(" ");
 		AVL<String> results = new AVL<>();
-
+		
 		for (String word : promptWords) {
 			if (!invertedIndexAVL.findKey(word))
 				continue;
-
+			
 			results.insertTreeWithFrequency(invertedIndexAVL.retrieve());
 		}
+		queryTime = (double)(System.nanoTime() - startTime) / 1000000;
 		return results;
 	}
 
 	public AVL<String> querySearchInvertedAVL(String prompt) {
 
+		long startTime = System.nanoTime();
 		// sport omar AND car AND house left AND OR
 		String[] postfixExpression = postfix(prompt.toLowerCase());
 		LinkedStack<AVL<String>> resultStack = new LinkedStack<>();
@@ -60,12 +76,13 @@ public class SearchEngine {
 				}
 			}
 		}
-
+		queryTime = (double)(System.nanoTime() - startTime) / 1000000;
 		return resultStack.empty() ? new AVL<>() : resultStack.pop();
 	}
 
 	public List<String> rankedSearchInvertedList(String prompt) {
 
+		long startTime = System.nanoTime();
 		String[] promptWords = prompt.toLowerCase().split(" ");
 		ResultList<String> results = new ResultList<>();
 
@@ -75,12 +92,13 @@ public class SearchEngine {
 
 			results.insertListWithFrequency(invertedIndexList.retrieve());
 		}
-
+		queryTime = (double)(System.nanoTime() - startTime) / 1000000;
 		return results;
 	}
 
 	public List<String> querySearchInvertedList(String prompt) {
 
+		long startTime = System.nanoTime();
 		// sport omar AND car AND house left AND OR
 		String[] postfixExpression = postfix(prompt.toLowerCase());
 		LinkedStack<ResultList<String>> resultStack = new LinkedStack<>();
@@ -111,11 +129,14 @@ public class SearchEngine {
 				}
 			}
 		}
-
+		queryTime = (double)(System.nanoTime() - startTime) / 1000000;
 		return resultStack.empty() ? new ResultList<>() : resultStack.pop();
 	}
 
 	public List<String> rankedSearchList(String prompt) {
+		
+		long startTime = System.nanoTime();
+
 		String[] promptWords = prompt.toLowerCase().split(" ");
 		ResultList<String> results = new ResultList<>();
 
@@ -166,11 +187,14 @@ public class SearchEngine {
 					results.insert(docId, indexList.retrieve().getFrequency());
 			}
 		}
-
+		queryTime = (double)(System.nanoTime() - startTime) / 1000000;
 		return results;
 	}
 
 	public List<String> querySearchList(String prompt) {
+		
+		long startTime = System.nanoTime();
+
 		String[] postfixExpression = postfix(prompt.toLowerCase());
 		LinkedStack<ResultList<String>> resultStack = new LinkedStack<>();
 
@@ -201,7 +225,7 @@ public class SearchEngine {
 				resultStack.push(docIds);
 			}
 		}
-
+		queryTime = (double)(System.nanoTime() - startTime) / 1000000;
 		return resultStack.empty() ? new ResultList<>() : resultStack.pop();
 	}
 

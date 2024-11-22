@@ -67,46 +67,118 @@ public class AVL<T> {
 
     public static AVL<String> intersect(AVL<String> avl1, AVL<String> avl2) {
         AVL<String> result = new AVL<>();
-        intersectHelper(avl1.root, avl2, result);
+        intersectHelper(avl1.root, avl2.root, result);
         return result;
     }
 
-    private static void intersectHelper(AVLNode<String> node, AVL<String> avl2, AVL<String> resultAvl) {
-        if (node == null)
-            return;
+    private static void intersectHelper(AVLNode<String> root1, AVLNode<String> root2, AVL<String> result) {
+        LinkedStack<AVLNode<String>> stack1 = new LinkedStack<>();
+        LinkedStack<AVLNode<String>> stack2 = new LinkedStack<>();
+        AVLNode<String> current1 = root1;
+        AVLNode<String> current2 = root2;
 
-        // traverse left sub tree
-        intersectHelper(node.left, avl2, resultAvl);
+        while ((current1 != null || !stack1.empty()) && (current2 != null || !stack2.empty())) {
+            // Traverse to the leftmost node of both trees
+            while (current1 != null) {
+                stack1.push(current1);
+                current1 = current1.left;
+            }
+            while (current2 != null) {
+                stack2.push(current2);
+                current2 = current2.left;
+            }
 
-        if (avl2.findKey(node.key)) {
-            resultAvl.insert(node.key, null);
+            current1 = stack1.pop();
+            current2 = stack2.pop();
+            stack1.push(current1);
+            stack2.push(current2);
+
+            int cmp = current1.key.compareTo(current2.key);
+
+            if (cmp == 0) {
+                // Keys are equal; add to result
+                result.insert(current1.key, null);
+                stack1.pop();
+                stack2.pop();
+                current1 = current1.right;
+                current2 = current2.right;
+            } else if (cmp < 0) {
+                // current1.key is smaller; move to next node in avl1
+                stack1.pop();
+                current1 = current1.right;
+                current2 = null; // Keep current2 the same
+            } else {
+                // current2.key is smaller; move to next node in avl2
+                stack2.pop();
+                current2 = current2.right;
+                current1 = null; // Keep current1 the same
+            }
         }
-
-        // traverse right sub tree
-        intersectHelper(node.right, avl2, resultAvl);
     }
 
     public static AVL<String> union(AVL<String> avl1, AVL<String> avl2) {
         AVL<String> result = new AVL<>();
-        unionHelper(avl1.root, result); // Add all nodes from docIds1
-        unionHelper(avl2.root, result); // Add all nodes from docIds2
+        unionHelper(avl1.root, avl2.root, result); // Add all nodes from docIds1 and docIds2
         return result;
     }
 
-    private static void unionHelper(AVLNode<String> node, AVL<String> result) {
-        if (node == null)
-            return;
-
-        // Traverse left subtree
-        unionHelper(node.left, result);
-
-        // Insert node data into the result AVL
-        if (!result.findKey(node.key)) {
-            result.insert(node.key, null);
+    private static void unionHelper(AVLNode<String> root1, AVLNode<String> root2, AVL<String> result) {
+        LinkedStack<AVLNode<String>> stack1 = new LinkedStack<>();
+        LinkedStack<AVLNode<String>> stack2 = new LinkedStack<>();
+        AVLNode<String> current1 = root1;
+        AVLNode<String> current2 = root2;
+    
+        while ((current1 != null || !stack1.empty()) || (current2 != null || !stack2.empty())) {
+            // Traverse to the leftmost node of both trees
+            while (current1 != null) {
+                stack1.push(current1);
+                current1 = current1.left;
+            }
+            while (current2 != null) {
+                stack2.push(current2);
+                current2 = current2.left;
+            }
+    
+            if (!stack1.empty() && !stack2.empty()) {
+                current1 = stack1.pop();
+                current2 = stack2.pop();
+                stack1.push(current1);
+                stack2.push(current2);
+    
+                int cmp = current1.key.compareTo(current2.key);
+    
+                if (cmp == 0) {
+                    // Keys are equal; add to result
+                    result.insert(current1.key, null);
+                    stack1.pop();
+                    stack2.pop();
+                    current1 = current1.right;
+                    current2 = current2.right;
+                } else if (cmp < 0) {
+                    // current1.key is smaller; add to result and move to next node in avl1
+                    result.insert(current1.key, null);
+                    stack1.pop();
+                    current1 = current1.right;
+                    current2 = null; // Keep current2 the same
+                } else {
+                    // current2.key is smaller; add to result and move to next node in avl2
+                    result.insert(current2.key, null);
+                    stack2.pop();
+                    current2 = current2.right;
+                    current1 = null; // Keep current1 the same
+                }
+            } else if (!stack1.empty()) {
+                // Only nodes in avl1 remain
+                current1 = stack1.pop();
+                result.insert(current1.key, null);
+                current1 = current1.right;
+            } else if (!stack2.empty()) {
+                // Only nodes in avl2 remain
+                current2 = stack2.pop();
+                result.insert(current2.key, null);
+                current2 = current2.right;
+            }
         }
-
-        // Traverse right subtree
-        unionHelper(node.right, result);
     }
 
     public void insert(String key, T val) {
@@ -260,7 +332,8 @@ public class AVL<T> {
     }
 
     private void makeListHelper(AVLNode<T> node, List<String> list) {
-        if (node == null) return;
+        if (node == null)
+            return;
 
         makeListHelper(node.left, list);
 
@@ -276,7 +349,8 @@ public class AVL<T> {
     }
 
     private void makePQHelper(AVLNode<T> node, LinkedPQ<String> queue) {
-        if (node == null) return;
+        if (node == null)
+            return;
 
         makePQHelper(node.left, queue);
 
@@ -291,18 +365,18 @@ public class AVL<T> {
     }
 
     private void insertTreeWithFrequencyHelper(AVLNode<T> node, AVL<T> newTree) {
-        if (node == null) return;
+        if (node == null)
+            return;
 
         // Traverse the left subtree
         insertTreeWithFrequencyHelper(node.left, newTree);
 
-        // Insert the current key into the new tree        
+        // Insert the current key into the new tree
         if (!newTree.findKey(node.key)) {
             newTree.insert(node.key, null);
             newTree.current.frequency = node.frequency;
-        } else 
+        } else
             newTree.current.frequency += node.frequency;
-
 
         // Traverse the right subtree
         insertTreeWithFrequencyHelper(node.right, newTree);
@@ -358,20 +432,20 @@ public class AVL<T> {
     // System.out.println("Level " + level + ":");
 
     // for (int i = 0; i < levelSize; i++) {
-    //     AVLNode<AVL<T>> node = queue.poll();
+    // AVLNode<AVL<T>> node = queue.poll();
 
-    //     // Print the node key and balance factor
-    //     System.out.println("Key: " + node.key + ", BF: " + balanceFactor((AVLNode<T>)
-    //     node) + ", Frequency: "
-    //     + node.frequency);
-    //     // node.data.print(); // Print the list data in each node
+    // // Print the node key and balance factor
+    // System.out.println("Key: " + node.key + ", BF: " + balanceFactor((AVLNode<T>)
+    // node) + ", Frequency: "
+    // + node.frequency);
+    // // node.data.print(); // Print the list data in each node
 
-    //     // Add left and right children to the queue if they exist
-    //     if (node.left != null) {
-    //     queue.add(node.left);
-    //     }
-    //     if (node.right != null) {
-    //     queue.add(node.right);
+    // // Add left and right children to the queue if they exist
+    // if (node.left != null) {
+    // queue.add(node.left);
+    // }
+    // if (node.right != null) {
+    // queue.add(node.right);
     // }
     // }
 
