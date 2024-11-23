@@ -1,27 +1,3 @@
-// The balance factor "BF" of a node denotes the 
-// difference of the heights "H" of the right and
-// left subtree ("node.right" and "node.left"), that is:
-//           BF(node) = H(node.right) - H(node.left)
-
-// Three important cases:
-// 1 - If the balance factor is < 0, the node is said to be left-heavy
-// 2 - If the balance factor is > 0, the node is said to be right-heavy
-// 3 - If the balance factor is = 0, the node is said to be balanced
-
-// Implemeneted methods height(AVLNode) returns the height of the node, and
-// balanceFactor(AVLNode) returns the balance factor (rightHeight - leftHeight) 
-
-// Balancing a left-heavy node:
-// Right rotation
-// Left-right Rotation
-
-// Balancing a right-heavy node:
-// Left rotation
-// Right-left rotation
-
-// *** THESE IMPORTS WERE STRICTLY USED FOR DEBUGGING THE PRINT METHOD ***
-// import java.util.LinkedList;
-// import java.util.Queue;
 
 public class AVL<T> {
 
