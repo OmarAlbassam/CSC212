@@ -295,4 +295,8 @@ public class SearchEngine {
 	int getVocab() {
 		return tp.vocabCount;
 	}
+
+	int getDocCount() {
+		return tp.docCount;
+	}
 }

@@ -26,14 +26,19 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Makes the program terminate after the user clicks x
 
         JLabel tokensLabel = new JLabel("Tokens: " + s.getToken());
-        tokensLabel.setBounds(50, 340, 250, 30); // Moved to the bottom-left of the frame
+        tokensLabel.setBounds(50, 340, 150, 30); // Moved to the bottom-left of the frame
         tokensLabel.setFont(new Font("Arial", Font.BOLD, 15));
         frame.add(tokensLabel);
 
         JLabel vocabLabel = new JLabel("Vocab: " + s.getVocab());
-        vocabLabel.setBounds(180, 340, 250, 30); // Moved to the bottom-right of the frame
+        vocabLabel.setBounds(150, 340, 150, 30); // Moved to the bottom-right of the frame
         vocabLabel.setFont(new Font("Arial", Font.BOLD, 15));
         frame.add(vocabLabel);
+
+        JLabel docsLabel = new JLabel("Docs: " + s.getDocCount());
+        docsLabel.setBounds(240, 340, 150, 30); // Moved to the bottom-right of the frame
+        docsLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        frame.add(docsLabel);
 
         JLabel time = new JLabel("Time: ");
         time.setBounds(320, 340, 250, 30); // Moved to the bottom-left of the frame
@@ -71,8 +76,8 @@ public class Main {
             String result = booleanQueryAction(input);
             outputField.setText(result);
 
-            // System.out.println("Query finished at " + durationInMillis + " ms.");
-            time.setText("Time: finished at " + SearchEngine.queryTime + " ms.");
+            String queryTime = String.format("%.4f", SearchEngine.queryTime); // This is to format the time to 4 decimal places
+            time.setText("Time: finished at " + queryTime + " ms.");
         });
         frame.add(booleanButton);
 
@@ -88,7 +93,8 @@ public class Main {
             }
             String result = rankedRetrievalAction(input);
             outputField.setText(result);
-            time.setText("Time: finished at " + SearchEngine.queryTime + " ms.");
+            String queryTime = String.format("%.4f", SearchEngine.queryTime); // This is to format the time to 4 decimal places
+            time.setText("Time: finished at " + queryTime + " ms.");
 
         });
         frame.add(rankedButton);
