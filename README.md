@@ -1,4 +1,4 @@
-# CSC212 - Data Structures Project
+# Search Engine - CSC212 Data Structures Project
 
 A Java search engine implementation demonstrating various data structures and retrieval methods for CSC212 (Data Structures course).
 
@@ -63,3 +63,4 @@ Ensure all file paths are correctly configured before running the project.
 - Make sure to verify file paths before running the program
 - Check the diagrams folder for helpful visualizations
 - Data files should be properly formatted according to the program requirements
+
